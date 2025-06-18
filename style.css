@@ -83,8 +83,18 @@ body {
 
 #space {
   background-image: url("images/space4.png");
+  /* mask-image: url("https://upload.wikimedia.org/wikipedia/commons/a/a8/Ski_trail_rating_symbol_black_circle.png"); */
   position: absolute;
   z-index: 1;
+}
+
+#space > img {
+  position: absolute;
+  mask-type: alpha;
+}
+
+#enter {
+  transform: translateY(-90px);
 }
 
 #page {
