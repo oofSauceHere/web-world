@@ -126,7 +126,7 @@ li {
     padding: 0;
     transition: font-size 0.25s, color 0.25s, padding 0.25s, opacity 0.25s;
     opacity: 0;
-    visibility: hidden; 
+    visibility: hidden;
 }
 
 li:hover, li:focus {
@@ -210,10 +210,24 @@ li:hover::after, li:focus::after {
     width: 70%;
     position: absolute;
     box-shadow: 0 0 100px inset rgba(0, 0, 0, 1);
+    box-sizing: content-box;
+    border-top: 10px solid var(--text-color);
+    border-bottom: 10px solid var(--text-color);
+
+    transition: transform 0.75s ease-in-out;
+}
+
+.about {
+    transform: translateY(-10px);
+}
+
+.about-container {
+    margin: 5em;
+    color: var(--text-color);
 }
 
 .projects, .skills, .resume, .contact {
-    transform: translateY(100%);
+    transform: translateY(calc(100% - 10px));
 }
 
 #content-light > .about {
@@ -222,8 +236,8 @@ li:hover::after, li:focus::after {
     z-index: 0;
 }
 
-#content-light > .projects {
-    background-image: url('../images/landscape2.jpg');
+#content-light > .contact {
+    background-image: url('../images/trees.png');
     background-size: cover;
     z-index: -1;
 }
@@ -234,8 +248,8 @@ li:hover::after, li:focus::after {
     z-index: 0;
 }
 
-#content-dark > .projects {
-    background-image: url('../images/trees.jpg');
+#content-dark > .contact {
+    background-image: url('../images/landscape3.png');
     background-size: cover;
     z-index: -1;
 }
