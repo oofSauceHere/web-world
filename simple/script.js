@@ -1,13 +1,14 @@
 let black = false;
 let dark = localStorage.getItem("darkMode") == "true";
+let currentPage = "about";
 
 window.onload = () => {
     if(dark) {
-        document.getElementById("bg-dark").style.zIndex = "5";
+        document.getElementById("bg-dark").style.zIndex = "50";
         document.getElementById("bg-light").style.zIndex = "0";
     } else {
         document.getElementById("bg-dark").style.zIndex = "0";
-        document.getElementById("bg-light").style.zIndex = "5";
+        document.getElementById("bg-light").style.zIndex = "50";
     }
 
     Array.prototype.forEach.call(document.getElementsByClassName("info"), (element) => {
@@ -32,10 +33,20 @@ window.onload = () => {
     }, 1000);
 }
 
-const loadPage = () => {
-    black = !black;
-    Array.prototype.forEach.call(document.getElementsByClassName("content"), (element) => {
-        element.style = black ? "background-color: black;" : "";
+const loadPage = (page) => {
+    if(page == currentPage) return;
+    currentPage = page;
+    
+    Array.prototype.forEach.call(document.getElementsByClassName("content"), (content) => {
+        for(element of content.children) {
+            if(element.className == `page ${page}`) {
+                element.style.zIndex = 0;
+                element.style.transform = "translateY(0)";
+            } else {
+                element.style.zIndex = -1;
+                element.style.transform = "translateY(100%)";
+            }
+        }
     });
 }
 

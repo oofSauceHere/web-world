@@ -166,6 +166,14 @@ li:hover::after, li:focus::after {
     align-items: flex-end;
 }
 
+.footer > p {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 5px;
+}
+
 .icons-left {
     justify-self: flex-start;
     margin-right: auto;
@@ -178,8 +186,7 @@ li:hover::after, li:focus::after {
 
 .content {
     grid-column: 2 / 3;
-    background-color: var(--background-color);
-    transition: background-color 1s;
+    overflow: hidden;
 }
 
 .icon {
@@ -196,4 +203,39 @@ li:hover::after, li:focus::after {
 .icon:hover {
     color: var(--text-color);
     transition: color 0.25s;
+}
+
+.page {
+    height: 100%;
+    width: 70%;
+    position: absolute;
+    box-shadow: 0 0 100px inset rgba(0, 0, 0, 1);
+}
+
+.projects, .skills, .resume, .contact {
+    transform: translateY(100%);
+}
+
+#content-light > .about {
+    background-image: url('../images/landscape1.png');
+    background-size: cover;
+    z-index: 0;
+}
+
+#content-light > .projects {
+    background-image: url('../images/landscape2.jpg');
+    background-size: cover;
+    z-index: -1;
+}
+
+#content-dark > .about {
+    background-image: url('../images/water.png');
+    background-size: cover;
+    z-index: 0;
+}
+
+#content-dark > .projects {
+    background-image: url('../images/trees.jpg');
+    background-size: cover;
+    z-index: -1;
 }
