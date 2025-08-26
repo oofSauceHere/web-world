@@ -10,6 +10,34 @@ window.onload = () => {
     //     console.log("hi");
     // }, 0);
 
+    let about_light = new Image();
+    about_light.src = "../images/landscape1.png";
+    document.getElementById("about-light").style.backgroundImage = `url(${about_light.src})`;
+
+    // let projects_light = new Image();
+    // projects_light.src = "../images/corkboard.png";
+    // document.getElementById("projects-light").style.backgroundImage = `url(${projects_light.src})`;
+
+    let contact_light = new Image();
+    contact_light.src = "../images/trees.png";
+    document.getElementById("contact-light").style.backgroundImage = `url(${contact_light.src})`;
+
+    let about_dark = new Image();
+    about_dark.src = "../images/water.png";
+    document.getElementById("about-dark").style.backgroundImage = `url(${about_dark.src})`;
+
+    // let projects_dark = new Image();
+    // projects_dark.src = "../images/corkboard.png";
+    // document.getElementById("projects-dark").style.backgroundImage = `url(${projects_dark.src})`;
+
+    let contact_dark = new Image();
+    contact_dark.src = "../images/landscape3.png";
+    document.getElementById("contact-dark").style.backgroundImage = `url(${contact_dark.src})`;
+
+    // use image onload callback to see if images are done loading?
+
+    document.getElementById("loading").style.visibility = "hidden";
+
     if(dark) {
         document.getElementById("bg-dark").style.zIndex = "50";
         document.getElementById("bg-light").style.zIndex = "0";
@@ -55,17 +83,17 @@ const loadPage = (page) => {
     toggleLinks("none");
     setTimeout(() => {
         toggleLinks("auto");
-    }, 1500);
+    }, 750);
     
     Array.prototype.forEach.call(document.getElementsByClassName("content"), (content) => {
         for(element of content.children) {
-            if(element.className == `page ${page}`) {
+            if(element.className.includes(page)) {
                 element.style.zIndex = 0;
-                element.style.transform = "translateY(-10px)";
+                element.classList.remove("inactive");
             } else {
                 element.style.zIndex = -1;
                 setTimeout((element) => {
-                    element.style.transform = "translateY(calc(100% - 10px))";
+                    element.classList.add("inactive");
                 }, 750, element);
             }
         }

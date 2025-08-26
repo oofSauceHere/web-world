@@ -3,10 +3,16 @@
     <head>
         <title>deccan's website</title>
         <link rel="icon" id="favicon" type="image/x-icon" href="../images/favicon-light.ico">
+        <link rel="preconnect" href="https://rsms.me/">
+        <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
         <link rel="stylesheet" href="style.css">
         <script src="script.js" defer></script>
     </head>
     <body>
+        <div id="loading">
+
+        </div>
+
         <!-- LIGHT MODE -->
 
         <div class="container light" id="bg-light">
@@ -54,20 +60,40 @@
                 </div>
             </nav>
             <main class="content" id="content-light">
-                <div class="page about">
+                <div class="page about" id="about-light">
+                    <div class="about-container">
+                        My name is Deccan! I like to play and draw.<br/>
+                        <br/>
+                        My favorite color is: red.<br/>
+                        <br/>
+                        Sparkle on! Don't forget to be yourself!
+                    </div>
+                </div>
+                <div class="page projects inactive" id="projects-light">
 
                 </div>
-                <div class="page projects">
+                <div class="page skills inactive" id="skills-light">
 
                 </div>
-                <div class="page skills">
+                <div class="page resume inactive" id="resume-light">
 
                 </div>
-                <div class="page resume">
-
-                </div>
-                <div class="page contact">
-
+                <div class="page contact inactive" id="contact-light">
+                    <div class="contact-container">
+                        <div class="contact-graphic">
+                            <img class="graphic-big" src="../images/contact.png" draggable="false"/>
+                            <!-- <img class="graphic-small" src="../images/contact2.png" draggable="false"/> -->
+                        </div>
+                        <form class="contact-form">
+                            <div class="contact-names">
+                                <input type="text" class="firstname" name="firstname" placeholder="First Name"/>
+                                <input type="text" class="lastname" name="lastname" placeholder="Last Name"/>
+                            </div>
+                            <input type="text" class="email" name="email" placeholder="Email"/>
+                            <textarea class="message" name="message" placeholder="Message"></textarea>
+                            <input type="submit" value="Contact"/>
+                        </form>
+                    </div>
                 </div>
             </main>
         </div>
@@ -119,22 +145,40 @@
                 </div>
             </nav>
             <main class="content" id="content-dark">
-                <div class="page about">
+                <div class="page about" id="about-dark">
                     <div class="about-container">
-                        Hi
+                        My name is Deccan! I like to play and draw.<br/>
+                        <br/>
+                        My favorite color is: red.<br/>
+                        <br/>
+                        Sparkle on! Don't forget to be yourself!
                     </div>
                 </div>
-                <div class="page projects">
+                <div class="page projects inactive" id="projects-dark">
 
                 </div>
-                <div class="page skills">
+                <div class="page skills inactive" id="skills-dark">
 
                 </div>
-                <div class="page resume">
+                <div class="page resume inactive" id="resume-dark">
 
                 </div>
-                <div class="page contact">
-
+                <div class="page contact inactive" id="contact-dark">
+                    <div class="contact-container">
+                        <div class="contact-graphic">
+                            <img class="graphic-big" src="../images/contact.png" draggable="false"/>
+                            <!-- <img class="graphic-small" src="../images/contact2.png" draggable="false"/> -->
+                        </div>
+                        <form class="contact-form">
+                            <div class="contact-names">
+                                <input type="text" class="firstname" name="firstname" placeholder="First Name"/>
+                                <input type="text" class="lastname" name="lastname" placeholder="Last Name"/>
+                            </div>
+                            <input type="text" class="email" name="email" placeholder="Email"/>
+                            <textarea class="message" name="message" placeholder="Message"></textarea>
+                            <input type="submit" value="Contact"/>
+                        </form>
+                    </div>
                 </div>
             </main>
         </div>
