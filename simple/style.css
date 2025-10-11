@@ -28,7 +28,7 @@ body, html {
     position: absolute;
     height: 100%;
     width: 100%;
-    background-color: red;
+    background-color: #f0d2c9;
     z-index: 100;
     visibility: visible;
 }
@@ -170,7 +170,7 @@ textarea {
 }
 
 input:focus, textarea:focus {
-    outline: none;
+    outline: solid white;
 }
 
 input::placeholder, textarea::placeholder {
@@ -349,6 +349,7 @@ input::placeholder, textarea::placeholder {
     flex-direction: row;
     justify-content: space-between;
     gap: 20px;
+    overflow: visible; 
 }
 
 .contact-names > input {

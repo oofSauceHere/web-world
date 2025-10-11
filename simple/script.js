@@ -122,13 +122,13 @@ const toggleDarkMode = () => {
         { clipPath: `circle(0% at ${x}px ${y}px)` },
         { clipPath: `circle(200% at ${x}px ${y}px)` }
     ], {
-        duration: 2500,
+        duration: 1500,
         fill: "forwards",
-        easing: "ease-out"
+        easing: "ease-in" // cubic-bezier(.47,.01,1,.45)
     });
 
     setTimeout(() => {
         document.getElementById("toggle-dark").style.pointerEvents = "fill";
         document.getElementById("toggle-light").style.pointerEvents = "fill";
-    }, 2000);
+    }, 1500);
 }

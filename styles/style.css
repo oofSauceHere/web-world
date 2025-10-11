@@ -1,0 +1,458 @@
+* {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+html {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  height: 100%;
+  width: 100%;
+
+  background-color: black;
+}
+
+@font-face {
+  font-family: 'SSD';
+  src: url('../fonts/DSEG7Classic-Regular.ttf');
+}
+
+/* one or the other */
+@font-face {
+  font-family: 'Tiny 5';
+  src: url('../fonts/Tiny5-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Bold Pixels';
+  src: url('../fonts/BoldPixels.ttf');
+}
+
+/* dark mode? */
+#bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-image: linear-gradient(white 0%, #acf4ff 100%);
+  /* background-image: linear-gradient(to bottom right, white 0%, lightblue 100%); */
+  /* animation: iris ease-out 2s 2s forwards; */
+}
+
+@keyframes iris {
+  from {
+    clip-path: circle(0% at 50% 50%);
+  }
+  to {
+    clip-path: circle(100% at 50% 50%)
+  }
+}
+
+#grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-size: 40px 40px;
+  /* height: calc(100% + 40px);
+  width: calc(100% + 40px);
+  transform: translate(-40px, -40px); */
+  height: 200%;
+  width: 200%;
+  transform: rotate(22.5deg) translate(-50%, 0);
+  margin: 0;
+  padding: 0;
+  background-image:
+    linear-gradient(to right, white 1px, transparent 1px),
+    linear-gradient(to bottom, white 1px, transparent 1px);
+  animation: move linear 1s infinite;
+  /* animation: move linear 1s infinite, bg-shake 0.2s 0.5s steps(1, end); */
+}
+
+/* @keyframes bg-shake {
+  0% {
+    transform: rotate(22.5deg) translate(-50%, 5px);
+  }
+
+  50% {
+    transform: rotate(22.5deg) translate(-50%, 20px);
+  }
+
+  100% {
+    transform: rotate(22.5deg) translate(calc(-50% + 40px), 40px);
+  }
+} */
+
+@keyframes move {
+  from {
+    /* transform: translate(-40px, -40px); */
+    transform: rotate(22.5deg) translate(-50%, 0);
+  }
+
+  to {
+    /* transform: translate(0, 0); */
+    transform: rotate(22.5deg) translate(calc(-50% + 40px), 40px);
+  }
+}
+
+#space {
+  background-image: url("../images/space4.png"); /* water maybe? */
+  /* mask-image: url("https://upload.wikimedia.org/wikipedia/commons/a/a8/Ski_trail_rating_symbol_black_circle.png"); */
+  position: absolute;
+}
+
+#space > img {
+  position: absolute;
+  mask-type: alpha;
+}
+
+#enter {
+  transform: translateY(-90px);
+}
+
+#page {
+  position: absolute;
+  transform: scale(0);
+  transition: transform 1.5s ease-out;
+}
+
+.container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#door {
+  margin-right: auto;
+  transition: transform 1s cubic-bezier(1, 0, 1, 0); /* note: negative numbers mess things up in a fun way */
+  cursor: pointer;
+  transform: scale(125%);
+}
+
+#door2 {
+  margin-left: auto;
+  margin-right: 2.5em;
+  transform: scale(50%);
+}
+
+#pfp {
+  height: 250px;
+  width: 250px;
+  transform: translate(-200px, -100px); /* needs to be measured differently */
+  /* transform: translate(0, 0); */
+  visibility: hidden;
+  /* animation: stretch 0.5s ease-out , deform 0.35s 0.5s steps(2, end); */
+  image-rendering: pixelated;
+  cursor: pointer;
+  position: absolute;
+  z-index: 10;
+}
+
+#pfp:hover {
+  transform: translate(-200px, -100px) scale(110%);
+}
+
+#time {
+  height: 300px;
+  width: 300px;
+  transform: translate(175px, 75px);
+  cursor: pointer;
+  position: absolute;
+  z-index: 8;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* may want to ditch this in lieu of onmouseover */
+#time:hover {
+  transform: translate(175px, 75px) scale(110%);
+}
+
+#clock {
+  height: 300px;
+  width: 300px;
+  image-rendering: pixelated;
+  position: absolute;
+  z-index: 8;
+}
+
+#realclock {
+  height: 65px;
+  width: 175px;
+  background-color: rgb(40, 47, 52);
+  position: absolute;
+  z-index: 9;
+  border-radius: 10px;
+  border: 2.5px solid #3cc3d8;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-family: 'SSD';
+  font-size: 40px;
+  color: #3cc3d8;
+  user-select: none;
+
+  filter: blur(1px);
+  image-rendering: pixelated;
+}
+
+/* maybe not, depends on real clock effect */
+/* #clock:active {
+  transform: translate(175px, 75px) scale(105%);
+} */
+
+#tv {
+  height: 300px;
+  width: 450px;
+  transform: translate(-25px, 215px);
+  image-rendering: pixelated;
+  cursor: pointer;
+  position: absolute;
+  z-index: 7;
+}
+
+#tv:hover {
+  transform: translate(-25px, 215px) scale(110%);
+}
+
+#tv:active {
+  transform: translate(-25px, 215px) scale(105%);
+}
+
+#screen {
+  height: 180px;
+  width: 270px;
+  transform: translate(-50px, 215px);
+  image-rendering: pixelated;
+  position: absolute;
+  z-index: 6;
+}
+
+#cd {
+  height: 200px;
+  width: 200px;
+  transform: translate(-200px, -100px);
+  image-rendering: pixelated;
+  cursor: pointer;
+  position: absolute;
+  z-index: 9;
+}
+
+#cd:hover {
+  transform: translate(-300px, -100px) scale(110%) !important;
+}
+
+.button {
+  height: 150px;
+  width: 300px;
+  image-rendering: pixelated;
+  cursor: pointer;
+  position: absolute;
+  z-index: 10;
+}
+
+#button1 {
+  transform: translate(500px, -200px) rotate(-15deg);
+}
+
+#button1:hover {
+  transform: translate(500px, -200px) rotate(-15deg) scale(110%);
+}
+
+#button2 {
+  transform: translate(550px, 0px);
+}
+
+#button2:hover {
+  transform: translate(550px, 0px) scale(110%);
+}
+
+#button3 {
+  transform: translate(500px, 200px) rotate(15deg);
+}
+
+#button3:hover {
+  transform: translate(500px, 200px) rotate(15deg) scale(110%);
+}
+
+#base {
+  height: 550px;
+  width: 550px;
+  transform: translate(0px, -50px);
+  position: absolute;
+  z-index: 5;
+  overflow: visible;
+}
+
+#connectors {
+  height: 550px;
+  width: 550px;
+  image-rendering: pixelated;
+  position: absolute;
+  z-index: 5;
+}
+
+#status {
+  font-family: 'Tiny 5';
+  font-size: 20px;
+  color: rgb(58, 67, 75);
+  z-index: 9;
+  width: 200px;
+  transform: translate(190px, 170px);
+  position: absolute;
+  visibility: hidden;
+}
+
+.bubble {
+  height: 150px;
+  width: 150px;
+  image-rendering: pixelated;
+  cursor: pointer;
+  position: absolute;
+  z-index: 8;
+}
+
+#bubble1 {
+  transform: translate(190px, -25px);
+}
+
+#bubble1:hover {
+  transform: translate(190px, -25px) scale(110%);
+}
+
+#bubble1:active {
+  transform: translate(190px, -25px) scale(105%);
+}
+
+#bubble2 {
+  transform: translate(295px, 42.5px);
+}
+
+#bubble2:hover {
+  transform: translate(295px, 42.5px) scale(110%);
+}
+
+#bubble2:active {
+  transform: translate(295px, 42.5px) scale(105%);
+}
+
+#bubble3 {
+  transform: translate(400px, 110px);
+}
+
+#bubble3:hover {
+  transform: translate(400px, 110px) scale(110%);
+}
+
+#bubble3:active {
+  transform: translate(400px, 110px) scale(105%);
+}
+
+@keyframes ding {
+  0% {
+    transform: translate(-200px, -100px) scale(110%);
+  }
+
+  50% {
+    transform: translate(-200px, -100px) scale(110%) rotate(2.5deg);
+  }
+
+  100% {
+    transform: translate(-200px, -100px) scale(110%);
+  }
+}
+
+@keyframes appear {
+  0% {
+    transform: translate(-100vw);
+    height: 1500px;
+    width: 1500px;
+    filter: blur(25px);
+  }
+
+  100% {
+    transform: translate(-200px, -100px);
+    height: 250px;
+    width: 250px;
+    filter: blur(0px);
+  }
+}
+
+@keyframes peek {
+  0% {
+    transform: translate(-200px, -100px);
+  }
+
+  100% {
+    transform: translate(-300px, -100px);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: translate(-300px, -100px) rotate(0deg);
+  }
+
+  100% {
+    transform: translate(-300px, -100px) rotate(360deg);
+  }
+}
+
+@keyframes turn {
+  0% {
+    transform: translate(175px, 75px) scale(110%) rotate(0deg);
+  }
+
+  100% {
+    transform: translate(175px, 75px) scale(110%) rotate(30deg);
+  }
+}
+
+/* @keyframes stretch {
+  from {
+    height: 250px;
+    width: 250px;
+  }
+
+  to {
+    height: 500px;
+    width: 125px;
+  }
+}
+
+@keyframes deform {
+  0% {
+    width: 125px;
+    height: 500px;
+  }
+
+  25% {
+    width: 417px;
+    height: 150px;
+  }
+
+  50% {
+    width: 175px;
+    height: 357px;
+  }
+
+  75% {
+    width: 312.5px;
+    height: 200px;
+  }
+
+  100% {
+    width: 250px;
+    height: 250px;
+  }
+} */

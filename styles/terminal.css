@@ -1,0 +1,121 @@
+* {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+html {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    height: 100%;
+    width: 100%;
+}
+
+@font-face {
+    font-family: 'Tiny 5';
+    src: url('../fonts/Tiny5-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Bold Pixels';
+    src: url('../fonts/BoldPixels.ttf');
+}
+
+.container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#page {
+    background-color: black;
+    background-image: url('../images/aero.png');
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+#monitor {
+    height: 600px;
+    width: 600px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+
+    transform: scaleX(calc(200%/3)) scaleY(150%);
+    animation: deform 0.5s 0.05s steps(1, end) forwards;
+}
+
+#crt {
+    height: 600px;
+    width: 600px;
+    position: absolute;
+}
+
+#screen {
+    height: 400px;
+    width: 500px;
+    transform: translate(0, -50px);
+    position: absolute;
+    background-color: rgb(31, 40, 50);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#terminal {
+    height: 300px;
+    width: 400px;
+    transform: translate(0, -45px);
+    position: absolute;
+
+    color: greenyellow;
+    font-size: 24px;
+    font-family: 'Tiny 5';
+    white-space: pre;
+    pointer-events: none;
+
+    animation: appear 0.5s steps(1, end) forwards;
+}
+
+#font-test {
+    visibility: hidden;
+}
+
+@keyframes appear {
+    0% {
+        visibility: hidden;
+    }
+
+    100% {
+        visibility: visible;
+    }
+}
+
+@keyframes deform {
+  0% {
+    transform: scaleX(calc(200%/3)) scaleY(150%);
+  }
+
+  25% {
+    transform: scaleX(120%) scaleY(calc(500%/6));
+  }
+
+  50% {
+    transform: scaleX(calc(550%/6)) scaleY(calc(654.5%/6));
+  }
+
+  75% {
+    transform: scaleX(calc(626.1%/6)) scaleY(calc(575%/6));
+  }
+
+  100% {
+    transform: scaleX(100%) scaleY(100%);
+  }
+}
