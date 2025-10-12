@@ -36,6 +36,7 @@ body {
     background-color: black;
     background-image: url('../images/aero.png');
     background-position: center;
+    background-size: contain;
     background-repeat: no-repeat;
 }
 
@@ -79,7 +80,7 @@ body {
     font-size: 24px;
     font-family: 'Tiny 5';
     white-space: pre;
-    pointer-events: none;
+    /* pointer-events: none; */
     /* overflow-y: scroll;
     scrollbar-width: none; */
 

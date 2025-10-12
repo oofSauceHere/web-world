@@ -10,15 +10,19 @@ let dir = ["home", "user"]
 let linelen = 0;
 let linecnt = 1;
 
+function redirect(url) {
+    window.location.href = url;
+}
+
 // my own little dict-based filesystem hierarchy
 const filesystem = {
     "/": ["home", "secret.txt"],
     "/home": ["user"],
     "/home/user": ["projects", "info.txt"],
     // easy enough to add projects here
-    "/home/user/projects": ["misc", "gartic-phone-operator.txt", "web-world.txt",
-                            "screenwriter.txt", "silent-filmifier.txt", "spotifymc.txt"],
-    "/home/user/projects/misc": ["nathan.txt", "frok.txt", "color-picker.txt"],
+    "/home/user/projects": ["misc", "gartic-phone-operator.txt", "screenwriter.txt",
+                            "silent-filmifier.txt", "spotifymc.txt", "web-world.txt",],
+    "/home/user/projects/misc": ["color-picker.txt", "frok.txt", "nathan.txt"],
 }
 
 // files and their contents
@@ -34,9 +38,22 @@ const files = {
     "silent-filmifier.txt": "",
     "spotifymc.txt": "",
     "nathan.txt": "",
-    "frok.txt": "",
+    "frok.txt": "frok",
     "color-picker.txt": "",
 }
+
+const links = {
+    "gartic-phone-operator.txt": "https://github.com/oofSauceHere/gartic-phone-operator",
+    "web-world.txt": "https://github.com/oofSauceHere/web-world",
+    "screenwriter.txt": "https://github.com/oofSauceHere/screenwriter",
+    "silent-filmifier.txt": "https://github.com/oofSauceHere/silent-filmifier",
+    "spotifymc.txt": "https://github.com/oofSauceHere/music-viewer-for-minecraft",
+    "nathan.txt": "https://github.com/oofSauceHere/nathan",
+    "frok.txt": "https://github.com/oofSauceHere/frok",
+    "color-picker.txt": "https://github.com/oofSauceHere/color-picker",
+}
+
+const commands = new Set(["help", "man", "ls", "pwd", "cd", "cat", "rm"]);
 
 // return the pixel? width of a line of text in 24px Tiny 5 font
 const getlinelength = (line) => {
@@ -59,7 +76,7 @@ const readinput = (key) => {
 }
 
 // handle terminal output
-const printline = (line, ctrl) => {
+const printline = (line, ctrl, url = "") => {
     if(!ctrl) {
         const phrases = line.split("\t");
         let linetr = "";
@@ -92,7 +109,12 @@ const printline = (line, ctrl) => {
             });
             linetr += "\t";
         });
-        terminaltext += `<br/><span style='color: white'>${linetr}</span>`;
+
+        if(url == "") {
+            terminaltext += `<br/><span style='color: white'>${linetr}</span>`;
+        } else {
+            terminaltext += `<br/><a href='${url}' target='_blank' style='color: lightblue'>${linetr}</a>`
+        }
     } else {
         // or linetr logic?
         terminaltext += `<br/><span>${line}</span>`;
@@ -169,19 +191,90 @@ window.onload = () => {
                 } else if(coms[0] == "") {
                     // is it good practice to have empty branch?
                 } else if(coms[0] == "help") {
-                    printline("no", false);
+                    printline("help: list all commands", false);
+                    printline("man: view reference \"manuals\"", false)
+                    printline("ls: list directory contents", false);
+                    printline("pwd: print working directory", false);
+                    printline("cd: change directory", false);
+                    printline("cat: print file contents", false);
+                    printline("rm: remove file or directory", false);
+                } else if(coms[0] == "man") {
+                    if(coms.length == 1) {
+                        printline("What manual page do you want?");
+                        printline("For example, try 'man man'.");
+                    } else {
+                        switch(coms[1]) {
+                            case "man":
+                                printline("NAME");
+                                printline("man: view reference \"manuals\"");
+                                printline("");
+                                printline("SYNOPSIS");
+                                printline("man [COMMAND]");
+                                break;
+                            case "ls":
+                                printline("NAME");
+                                printline("ls: list directory contents");
+                                printline("");
+                                printline("SYNOPSIS");
+                                printline("ls [DIR]");
+                                break;
+                            case "cd":
+                                printline("NAME");
+                                printline("cd: change directory");
+                                printline("");
+                                printline("SYNOPSIS");
+                                printline("cd [DIR]");
+                                break;
+                            case "cat":
+                                printline("NAME");
+                                printline("cat: print file contents (does not concatenate files even though it's supposed to... sorry");
+                                printline("");
+                                printline("SYNOPSIS");
+                                printline("cat [FILE]");
+                                break;
+                            case "rm":
+                                printline("NAME");
+                                printline("rm: remove file or directory");
+                                printline("");
+                                printline("SYNOPSIS");
+                                printline("rm [OPTIONS] [FILE/DIR]");
+                                printline("");
+                                printline("OPTIONS");
+                                printline("-rf");
+                                printline("remove directories and their contents recurisvely, never prompt");
+                                break;
+                            default:
+                                printline(`No manual entry for ${coms[1]}`);
+                        }
+                    }
                 } else if(coms[0] == "ls") {
-                    // printline("This isn't a real terminal lmao what did<br/>you expect to find here", false);
-                    const filelist = filesystem[getdirstr()];
-                    // filenames with spaces get quotes... will i ever even create filenames with spaces?
-                    if(filelist.length > 0) printline(filelist.reduce((acc, cv) => acc + cv + "\t", "").slice(0, -1), false);
+                    // maybe have an --all flag to show something secret
+                    let filelist = filesystem[getdirstr()];
+                    if(coms.length > 1) {
+                        let dirstr = "";
+                        if(coms[1][0] == "/") {
+                            dirstr = coms[1];
+                        } else if(coms[1][0] == "~") {
+                            dirstr = "/home/user" + coms[1].slice(1);
+                        } else {
+                            dirstr = getdirstr() + "/" + coms[1];
+                        }
+
+                        if(dirstr in filesystem) {
+                            filelist = filesystem[dirstr];
+                            if(filelist.length > 0) printline(filelist.reduce((acc, cv) => acc + cv + "\t", "").slice(0, -1), false);
+                        } else {
+                            printline(`ls: ${coms[1]}: No such file or directory.`);
+                        }
+                    } else {
+                        if(filelist.length > 0) printline(filelist.reduce((acc, cv) => acc + cv + "\t", "").slice(0, -1), false);
+                    }
                 } else if(coms[0] == "pwd") {
                     printline(getdirstr(), false);
                 } else if(coms[0] == "cd") {
                     if(coms.length == 1) {
                         dir = ["home", "user"];
                     } else {
-                        // what if it starts in "/"?
                         const path = coms[1].split("/");
                         if(path[0] == "") {
                             dir = [];
@@ -222,21 +315,24 @@ window.onload = () => {
                     }
                     setPromptString();
                 } else if(coms[0] == "rm") {
-                    printline("rm: nope lmao", false);
+                    printline("rm: nope lmao.", false);
                 } else if(coms[0] == "cat") {
+                    // doesnt work for paths, only current directory files
+
                     // fails if no second input
                     if(filesystem[getdirstr()].includes(coms[1])) {
                         if(coms[1].includes(".")) {
                             printline(files[coms[1]], false);
+                            if(coms[1] in links) printline("Go to project ->", false, links[coms[1]]);
                         } else {
-                            printline(`cat: ${coms[1]}: Is a directory`);
+                            printline(`cat: ${coms[1]}: Is a directory.`);
                         }
                     } else {
-                        printline(`cat: ${coms[1]}: No such file or directory`);
+                        printline(`cat: ${coms[1]}: No such file or directory.`);
                     }
                 } else {
-                    printline(`${coms[0]}: command not found`, false);
-                    printline("Use 'help' to view all commands");
+                    printline(`${coms[0]}: command not found.`, false);
+                    printline("Use 'help' to view all commands.");
                     printline(`${promptString} `, true)
                     terminal.innerHTML = terminaltext;
                     command = "";
@@ -245,6 +341,8 @@ window.onload = () => {
                     terminal.scrollTop = terminal.scrollHeight;
                     return;
                 }
+                // add "man"
+                // support for mkdir/touch? put in localstorage? how big can that be?
 
                 printline(`${promptString} `, true);
                 terminal.innerHTML = terminaltext;
