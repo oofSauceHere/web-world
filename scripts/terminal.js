@@ -3,7 +3,7 @@ const terminal = document.getElementById("terminal");
 const canvas = document.getElementById("font-test");
 
 // global variables... probably want to change the name here?
-let terminaltext = "Dumb Stupid Fake Terminal<br/>(c) oofSauce. All rights reserved.";
+let terminaltext = "Real Terminal (Not Fake)<br/>(c) oofSauce. All rights reserved.";
 let command = "";
 let promptString = "user@web-world:~$";
 let dir = ["home", "user"]
@@ -12,7 +12,7 @@ let linecnt = 1;
 
 // my own little dict-based filesystem hierarchy
 const filesystem = {
-    "/": ["home"],
+    "/": ["home", "secret.txt"],
     "/home": ["user"],
     "/home/user": ["projects", "info.txt"],
     // easy enough to add projects here
@@ -24,6 +24,10 @@ const filesystem = {
 // files and their contents
 const files = {
     "info.txt": "hello, test",
+    "secret.txt": "i don't know what you expected to find here. i mean, this isn't a real terminal. it's all fake. "
+                  + "so there's like, what, 5 seconds of your life gone? i would count but im not "
+                  + "there with you because im doing something more important. actually, its probably more than 5 now, "
+                  + "and more, and still more... and guess what? theres still nothing interesting here. goodbye!",
     "gartic-phone-operator.txt": "",
     "web-world.txt": "",
     "screenwriter.txt": "",
@@ -46,6 +50,7 @@ const getlinelength = (line) => {
 const readinput = (key) => {
     if(getlinelength(promptString + " " + command + key) > 402*linecnt) {
         terminaltext += "\n";
+        // need to account for space between newline and end of terminal screen
         linecnt += 1;
     }
     terminaltext += key;
@@ -58,20 +63,38 @@ const printline = (line, ctrl) => {
     if(!ctrl) {
         const phrases = line.split("\t");
         let linetr = "";
-        let outlinecnt = 1;
+        let linetr_intr = "";
         phrases.forEach((phrase) => {
             const words = phrase.split(" ");
             words.forEach((word) => {
-                if(getlinelength(linetr + word) > 402*outlinecnt) {
-                    linetr += "\n";
-                    outlinecnt += 1;
+                // dont go to newline if current line is empty
+                if(getlinelength(linetr_intr + word) > 402) {
+                    linetr += linetr_intr == "" ? "" : "\n";
+                    linetr_intr = "";
                 }
-                linetr += word + " "; // fails for words longer than term width?
+
+                let wordlinecnt = 1;
+                let wordtr = "";
+                if(getlinelength(word) > 402) {
+                    for(let i=0; i<word.length; i++) {
+                        if(getlinelength(wordtr + word[i]) > 402*wordlinecnt) {
+                            wordtr += "\n";
+                            // need to account for space between newline and end of terminal screen
+                            wordlinecnt += 1;
+                        }
+                        wordtr += word[i];
+                    }
+                    linetr += wordtr + " ";
+                } else {
+                    linetr_intr += word + " ";
+                    linetr += word + " ";
+                }
             });
             linetr += "\t";
         });
         terminaltext += `<br/><span style='color: white'>${linetr}</span>`;
     } else {
+        // or linetr logic?
         terminaltext += `<br/><span>${line}</span>`;
     }
 }
@@ -108,20 +131,28 @@ window.onload = () => {
                 readinput(e.key);
                 terminal.innerHTML = terminaltext;
             } else if(e.code == "Backspace" && linelen > 0) {
+                terminaltext = terminaltext.slice(0, -1);
                 if(terminaltext.slice(-1) == "\n") {
                     terminaltext = terminaltext.slice(0, -1);
-                    linecnt = 1;
+                    linecnt -= 1;
                 }
-                terminaltext = terminaltext.slice(0, -1);
                 terminal.innerHTML = terminaltext;
                 command = command.slice(0, -1);
                 linelen -= 1;
             } else if(e.code == "Enter") {
                 linecnt = 1;
 
+                // execute multiple commands at once using semicolon separation?
+
                 if(command.trim() == "rm -rf /") {
-                    window.location.href = "index.html";
-                    // OR make it explode... and then what?
+                    let explosion = document.createElement("img");
+                    explosion.src = "images/explosion.gif";
+                    explosion.id = "explosion";
+                    document.getElementById("page").appendChild(explosion);
+
+                    setTimeout(() => {
+                        window.location.href = "index.html";
+                    }, 250);
                     return;
                 }
 
@@ -136,7 +167,7 @@ window.onload = () => {
                     terminal.scrollTop = terminal.scrollHeight;
                     return;
                 } else if(coms[0] == "") {
-                    // good practice to have empty branch?
+                    // is it good practice to have empty branch?
                 } else if(coms[0] == "help") {
                     printline("no", false);
                 } else if(coms[0] == "ls") {
@@ -150,9 +181,19 @@ window.onload = () => {
                     if(coms.length == 1) {
                         dir = ["home", "user"];
                     } else {
+                        // what if it starts in "/"?
                         const path = coms[1].split("/");
-                        path.forEach((loc, index) => {
-                            if(loc == "..") {
+                        if(path[0] == "") {
+                            dir = [];
+                        }
+                        
+                        // use normal for-loop so we can break
+                        for(let i=0; i<path.length; i++) {
+                            const loc = path[i];
+
+                            if(loc == "~" && i == 0) {
+                                dir = ["home", "user"];
+                            } else if(loc == "..") {
                                 if(dir.length > 0) dir.pop();
                             } else if(loc == "." || loc == "") {
                                 // do nothing
@@ -161,25 +202,27 @@ window.onload = () => {
                                 if(filesystem[getdirstr()].includes(loc)) {
                                     if(loc.includes(".")) {
                                         printline(`cd: ${loc}: Not a directory`, false);
-                                        for(let i=0; i<index; i++) {
+                                        // not sufficient for restoration
+                                        for(let j=0; j<i; j++) {
                                             dir.pop();
                                         }
-                                        return;
+                                        break;
                                     }
                                     dir.push(loc);
                                 } else {
                                     printline(`cd: ${coms[1]}: No such file or directory`, false);
-                                    for(let i=0; i<index; i++) {
+                                    // not sufficient for restoration
+                                    for(let j=0; j<i; j++) {
                                         dir.pop();
                                     }
-                                    return;
+                                    break;
                                 }
                             }
-                        });
+                        }
                     }
                     setPromptString();
                 } else if(coms[0] == "rm") {
-                    printline("nope lmao", false);
+                    printline("rm: nope lmao", false);
                 } else if(coms[0] == "cat") {
                     // fails if no second input
                     if(filesystem[getdirstr()].includes(coms[1])) {
@@ -193,6 +236,7 @@ window.onload = () => {
                     }
                 } else {
                     printline(`${coms[0]}: command not found`, false);
+                    printline("Use 'help' to view all commands");
                     printline(`${promptString} `, true)
                     terminal.innerHTML = terminaltext;
                     command = "";

@@ -80,12 +80,21 @@ body {
     font-family: 'Tiny 5';
     white-space: pre;
     pointer-events: none;
+    /* overflow-y: scroll;
+    scrollbar-width: none; */
 
     animation: appear 0.5s steps(1, end) forwards;
 }
 
 #font-test {
     visibility: hidden;
+}
+
+#explosion {
+    width: 710px;
+    height: 1000px;
+    image-rendering: pixelated;
+    position: absolute;
 }
 
 @keyframes appear {
