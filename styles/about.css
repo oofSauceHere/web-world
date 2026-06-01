@@ -1,0 +1,184 @@
+* {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 9pt;
+}
+
+html {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #e3e3e3;
+    /* background-image: url('../images/space4.png'); */
+    /* background-image: url('../images/landscape1_pix.png');
+    background-position: center;
+    background-size: cover; */
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+#title {
+    background-color: #003399;
+    width: 800px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+}
+
+#title > img {
+    height: 75px;
+}
+
+#nav {
+    background-color: #6699cc;
+    width: 800px;
+    height: 25px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+
+    color: #003399;
+    font-weight: bold;
+}
+
+#nav > a {
+    color: white;
+    font-weight: normal;
+}
+
+table {
+    border-collapse: collapse;
+    border: 0;
+}
+
+td {
+    padding: 0;
+    border: 0;
+}
+
+#main {
+    height: calc(100vh - 125px);
+    background-color: white;
+}
+
+#content {
+    padding: 15px;
+}
+
+#content > table {
+    height: 100%;
+}
+
+#info {
+    
+}
+
+#blog {
+
+}
+
+#intro {
+    height: auto;
+}
+
+.box {
+    border: 2px solid #6699cc;
+}
+
+.nametext {
+    font-size: 14pt;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.accent {
+    color: #fd5500;
+    font-weight: bold;
+}
+
+.header {
+    background-color: #ffcc99;
+    padding: 2px 15px;
+}
+
+.accent2 {
+    color: white;
+    font-weight: bold;
+}
+
+.header2 {
+    background-color: #6699cc;
+    padding: 2px 15px;
+}
+
+.boxcontent {
+    border-collapse: separate;
+    border-spacing: 3px;
+}
+
+.infotype {
+    width: 90px;
+    padding: 3px;
+    background-color: #bbddff;
+    font-weight: bold;
+    color: #336699;
+}
+
+.infodata {
+    width: 190px;
+    max-width: 190px;
+    padding: 3px;
+    background-color: #ddeeff;
+    word-wrap: break-word;
+}
+
+#mute {
+  height: 75px;
+  width: 75px;
+  image-rendering: pixelated;
+  cursor: pointer;
+  position: absolute;
+  left: 85px;
+  bottom: 25px;
+  background-image: url('../images/muted3.png');
+  background-size: cover;
+  z-index: 9;
+}
+
+#mute:active {
+  transform: scale(90%);
+}
+
+#switch {
+  height: 75px;
+  width: 75px;
+  image-rendering: pixelated;
+  cursor: pointer;
+  position: absolute;
+  left: 10px;
+  bottom: 25px;
+  background-image: url('../images/switch_on.png');
+  background-size: cover;
+  z-index: 9;
+}
+
+#switch:active {
+  transform: scale(90%);
+}

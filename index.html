@@ -33,12 +33,12 @@
             <div id="bg">
                 <div id="grid"></div>
             </div>
-            <img id="pfp" src="images/winpfp.png" draggable="false" onmouseover="ding1()" onclick="ding2()" title="im not really an artist... but fake it 'till you make it"/>
+            <img id="pfp" src="images/winpfp.png" draggable="false" onmouseover="ding1()" onclick="ding2()" title="Hi"/>
             <div id="time" onmouseover="tick()" onclick="tickclick()">
                 <img id="clock" src="images/clock.png" draggable="false"/>
-                <!-- <div id="realclock"></div> -->
+                <div id="realclock"></div>
             </div>
-            <img id="tv" src="images/tv.png" onmouseover="tvpower()" draggable="false"/>
+            <img id="tv" src="images/tv.png" onmouseover="tvpower()" onclick="redirect('media.html')" draggable="false"/>
             <!-- <img id="screen" src="images/purbleplace.png" draggable="false"/> -->
             <img id="cd" src="images/cd.png" onmouseover="cdactive()" onmousedown="cdplay()" draggable="false"/>
             <!-- <img id="button1" class="button" src="images/button.png" draggable="false"/>
@@ -48,14 +48,28 @@
                 <div id="status">
                     Hello chat !<br/>
                     <br/>
-                    <span style="color: #3cc3d8">Status:</span><br/>
-                    Watching <em>Scrubs</em>, probably.
+                    <span id="accent" style="color: #3cc3d8">Status:</span><br/>
+                    probably watching <em><span id="show"></span></em> ...
                 </div>
                 <img id="bubble1" class="bubble" src="images/bubble1.png" onmouseover="water()" onclick="redirect('terminal.html')" draggable="false"/>
-                <img id="bubble2" class="bubble" src="images/bubble2.png" onmouseover="water()" onclick="water()" draggable="false"/>
-                <img id="bubble3" class="bubble" src="images/bubble3.png" onmouseover="water()" onclick="water()" draggable="false"/>
+                <!-- <div id="bubble1text">
+                    <div class="bubbletext">Projects</div>
+                </div> -->
+                <img id="bubble2" class="bubble" src="images/bubble2.png" onmouseover="water()" onclick="redirect('about.html')" draggable="false"/>
+                <!-- <div id="bubble2text">
+                    <div class="bubbletext">About</div>
+                </div> -->
+                <img id="bubble3" class="bubble" src="images/bubble3.png" onmouseover="water()" onclick="redirect('bulletin.html')" draggable="false"/>
+                <!-- <div id="bubble3text">
+                    <div class="bubbletext">Notes</div>
+                </div> -->
                 <img id="connectors" src="images/connectors.png" draggable="false"/>
             </div>
+            <div id="mute" onclick="mute()"></div>
+            <div id="switch" onclick="darkmode()"></div> 
+
+            <!-- other shit -->
+            <!-- <img class="circle" id="circle1" src="images/circle.gif" draggable="false"/> -->
         </div>
     </body>
 </html>

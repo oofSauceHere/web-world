@@ -1,0 +1,297 @@
+* {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+html {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  height: 100%;
+  width: 100%;
+
+}
+
+@font-face {
+  font-family: 'SSD';
+  src: url('../fonts/DSEG7Classic-Regular.ttf');
+}
+
+/* one or the other */
+@font-face {
+  font-family: 'Tiny 5';
+  src: url('../fonts/Tiny5-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Bold Pixels';
+  src: url('../fonts/BoldPixels.ttf');
+}
+
+/* dark mode? */
+#bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  /* background-image: linear-gradient(white 0%, #b5b5b5 100%); */
+  background-image: url('../images/brick2_pix.png');
+  background-size: cover;
+  /* background-image: url('../images/cork.png');
+  background-size: cover;
+  image-rendering: pixelated; */
+}
+
+#layer {
+  height: 100%;
+  width: 100%;
+  background-color: rgba(94, 35, 35, 0.25);
+}
+
+@keyframes move {
+  from {
+    /* transform: translate(-40px, -40px); */
+    transform: rotate(22.5deg) translate(-50%, 0);
+  }
+
+  to {
+    /* transform: translate(0, 0); */
+    transform: rotate(22.5deg) translate(calc(-50% + 40px), 40px);
+  }
+}
+
+#page {
+  position: absolute;
+}
+
+.container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#nav {
+    z-index: 10;
+    height: 100vh;
+    width: 35vh;
+    background-color: white;
+    position: absolute;
+    animation: slide-in ease-out 0.5s forwards;
+    overflow: visible;
+    /* animation: spin linear 30s infinite; */
+}
+
+#nav > div {
+  height: 100%;
+  width: 25px;
+  background-color: black;
+  position: absolute;
+  left: 35vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  cursor: pointer;
+}
+
+#nav > div > img {
+  height: 20px;
+  width: 20px;
+}
+
+#nav > ul {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  display: grid;
+  grid-template-rows: repeat(5, 1fr);
+}
+
+#nav li:nth-child(1) {
+  background-color: #ff0000;
+}
+
+#nav li:nth-child(2) {
+  background-color: #ff8000;
+}
+
+#nav li:nth-child(3) {
+  background-color: #ffd500;
+}
+
+#nav li:nth-child(4) {
+  background-color: #7cde00;
+}
+
+#nav li:nth-child(5) {
+  background-color: #0099ff;
+}
+
+#nav li {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Bold Pixels';
+  font-size: 3.5rem;
+}
+
+#nav li a {
+  color: white;
+  text-decoration: none;
+}
+
+#nav li a:hover {
+  transform: scale(110%);
+}
+
+#nav li a:active {
+  transform: scale(105%);
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes slide-in {
+  from {
+    left: -35vh;
+  }
+
+  to {
+    left: 0;
+  }
+}
+
+@keyframes slide-out {
+  from {
+    left: 0vh;
+  }
+
+  to {
+    left: -35vh;
+  }
+}
+
+#mailbox {
+  height: 100vh;
+  width: calc(100vw - 50vh);
+  z-index: 10;
+  position: absolute;
+  right: 0;
+}
+
+.mail {
+  height: 200px;
+  width: 200px;
+  position: absolute;
+  cursor: pointer;
+}
+
+#mail1 {
+  left: 100px;
+  top: 50px;
+}
+
+#mail2 {
+  left: 500px;
+  bottom: 150px;
+}
+
+.mail:hover {
+  transform: scale(110%);
+}
+
+.mail:active {
+  transform: scale(105%);
+}
+
+#next {
+  position: absolute;
+  height: 75px;
+  width: 75px;
+  margin: auto;
+  right: 50px;
+
+  background-color: black;
+  cursor: pointer;
+
+  font-family: 'Bold Pixels';
+  font-size: 100px;
+  color: white;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 11;
+  /* animation: float 1s ease-in-out infinite; */
+}
+
+#next:hover {
+  transform: scale(110%);
+}
+
+#next:active {
+  transform: scale(105%);
+}
+
+#mute {
+  height: 75px;
+  width: 75px;
+  image-rendering: pixelated;
+  cursor: pointer;
+  position: absolute;
+  right: 85px;
+  bottom: 25px;
+  background-image: url('../images/muted2.png');
+  background-size: cover;
+  z-index: 11;
+}
+
+#mute:active {
+  transform: scale(90%);
+}
+
+#switch {
+  height: 75px;
+  width: 75px;
+  image-rendering: pixelated;
+  cursor: pointer;
+  position: absolute;
+  right: 10px;
+  bottom: 25px;
+  background-image: url('../images/switch_on.png');
+  background-size: cover;
+  z-index: 11;
+}
+
+#switch:active {
+  transform: scale(90%);
+}
+
+/* @keyframes float {
+  0% {
+    right: 50px;
+  }
+
+  50% {
+    right: 60px;
+  }
+
+  100% {
+    right: 50px;
+  }
+} */

@@ -25,13 +25,18 @@ let base = document.getElementById("base");
 let ustatus = document.getElementById("status");
 
 const interactables = [cd, pfp, time, tv, bubble1, bubble2, bubble3];
+const shows = ["Scrubs", "Malcolm in the Middle", "It's Always Sunny", "Arrested Development", "30 Rock"]
 
 let clicks = 0;
 let ticker = 0;
 let playing = 0;
+let muted = 1;
+let dark = localStorage.getItem("darkMode") == "true";
 
 // use cookies instead so we can set expiration?
 const loaded = localStorage.getItem("loaded") == "true";
+
+// need mute function, using mute to handle sound event triggers is bad...
 
 function getCoords(element) {
     let rect = element.getBoundingClientRect();
@@ -40,6 +45,22 @@ function getCoords(element) {
 
 // need quick load (dont have to do door shit every time)
 function quickload() {
+    const now = new Date();
+    const hours = now.getHours();
+    const minutes = now.getMinutes();
+    const hours_str = `${ hours%12 < 10 && hours%12 != 0 ? '0' : '' }${ hours%12 == 0 ? '12' : hours%12 }`;
+    // const hours_str = `${ hours%12 == 0 ? '12' : hours%12 }`;
+    const minutes_str = `${ minutes < 10 ? '0' : '' }${ minutes }`;
+    document.getElementById("realclock").innerHTML = `${ hours_str }:${ minutes_str }`;
+    setInterval(() => {
+        const now = new Date();
+        const hours = now.getHours();
+        const minutes = now.getMinutes();
+        const hours_str = `${ hours%12 < 10 && hours%12 != 0 ? '0' : '' }${ hours%12 == 0 ? '12' : hours%12 }`;
+        const minutes_str = `${ minutes < 10 ? '0' : '' }${ minutes }`;
+        document.getElementById("realclock").innerHTML = `${ hours_str }:${ minutes_str }`;
+    }, 1000);
+
     const wHeight = window.innerHeight;
     const wWidth = window.innerWidth;
 
@@ -113,25 +134,63 @@ function quickload() {
             "translate(-300px, -100px)";
         cd.style.animation = "";
     }, 1300);
+
+    setInterval(() => {
+        spawncircle();
+    }, 2500);
+}
+
+function recolor() {
+    if(dark) {
+        document.body.style.backgroundImage = "url('images/city_black.png')";
+        // document.getElementById("bg").style.backgroundImage = "linear-gradient(black 0%, grey 100%)"
+        document.getElementById("bg").style.backgroundImage = "linear-gradient(transparent 0%, transparent 50%, black 100%)";
+        document.getElementById("grid").style.backgroundImage = "linear-gradient(to right, grey 1px, transparent 1px), linear-gradient(to bottom, grey 1px, transparent 1px)"
+        document.getElementById("bubble1").src = "images/bubble1_red.png";
+        document.getElementById("bubble2").src = "images/bubble2_red.png";
+        document.getElementById("bubble3").src = "images/bubble3_red.png";
+        document.getElementById("connectors").src = "images/connectors3.png";
+        document.getElementById("mute").style.backgroundImage = muted ? "url(images/muted.png)" : "url(images/unmuted.png)";
+        document.getElementById("realclock").style.color = "#e8075d";
+        document.getElementById("accent").style.color = "#990000";
+    } else {
+        document.body.style.backgroundImage = "url('images/city_blue.png')";
+        // document.getElementById("bg").style.backgroundImage = "linear-gradient(white 0%, #acf4ff 100%)";
+        document.getElementById("bg").style.backgroundImage = "linear-gradient(transparent 0%, transparent 50%, #acf4ff 100%)";
+        document.getElementById("grid").style.backgroundImage = "linear-gradient(to right, white 1px, transparent 1px), linear-gradient(to bottom, white 1px, transparent 1px)"
+        document.getElementById("bubble1").src = "images/bubble1.png";
+        document.getElementById("bubble2").src = "images/bubble2.png";
+        document.getElementById("bubble3").src = "images/bubble3.png";
+        document.getElementById("connectors").src = "images/connectors.png";
+        document.getElementById("mute").style.backgroundImage = muted ? "url(images/muted5.png)" : "url(images/unmuted5.png)";
+        document.getElementById("realclock").style.color = "#e86207";
+        document.getElementById("accent").style.color = "#3cc3d8";
+    }
 }
 
 window.onload = () => {
+    recolor();
+    document.getElementById("switch").style.backgroundImage = dark ? "url('images/switch_off.png')" : "url('images/switch_on.png')";
+
     if(loaded) {
         quickload();
     } else {
         space.style.visibility = "visible";
     }
+
+    const rand = Math.floor(Math.random() * 5);
+    document.getElementById("show").innerHTML = shows[rand];
 }
 
 function load() {
     localStorage.setItem("loaded", "true");
 
-    // setInterval(() => {
-    //     const now = new Date();
-    //     const hours = now.getHours();
-    //     const minutes = now.getMinutes();
-    //     document.getElementById("realclock").innerHTML = `${ hours%12 < 10 ? '0' : '' }${ hours%12 }:${ minutes }`;
-    // }, 1000);
+    setInterval(() => {
+        const now = new Date();
+        const hours = now.getHours();
+        const minutes = now.getMinutes();
+        document.getElementById("realclock").innerHTML = `${ hours%12 < 10 ? '0' : '' }${ hours%12 }:${ minutes }`;
+    }, 1000);
 
     const wHeight = window.innerHeight;
     const wWidth = window.innerWidth;
@@ -230,8 +289,10 @@ function load() {
 }
 
 function ding1() {
-    tap.load();
-    tap.play();
+    if(muted == 0) {
+        tap.load();
+        tap.play();
+    }
 }
 
 function ding2() {
@@ -240,8 +301,11 @@ function ding2() {
     clicks++;
     if (clicks == 50) {
         pfp.src = "images/winpfpcrack.png";
-        crack.load();
-        crack.play();
+
+        if(muted == 0) {
+            crack.load();
+            crack.play();
+        }
     } else {
         ding1();
     }
@@ -261,8 +325,10 @@ function ding2() {
 }
 
 function water() {
-    drop.load();
-    drop.play();
+    if(muted == 0) {
+        drop.load();
+        drop.play();
+    }
 }
 
 function redirect(url) {
@@ -271,19 +337,27 @@ function redirect(url) {
 }
 
 function tvpower() {
-    tvon.load();
-    tvon.play()
+    if(muted == 0) {
+        tvon.load();
+        tvon.play();
+    }
 }
 
 function tick() {
     if (ticker == 0) {
         ticker = 1;
-        tick1.load();
-        tick1.play();
+        
+        if(muted == 0) {
+            tick1.load();
+            tick1.play();
+        }
     } else {
         ticker = 0;
-        tick2.load();
-        tick2.play();
+
+        if(muted == 0) {
+            tick2.load();
+            tick2.play();
+        }
     }
 }
 
@@ -299,7 +373,7 @@ function tickclick() {
 }
 
 function cdactive() {
-    if (playing == 0) {
+    if (playing == 0 && muted == 0) {
         cdload.load();
         cdload.play();
     }
@@ -315,9 +389,11 @@ function cdplay() {
             cd.style.pointerEvents = "auto";
         }, 500); // is 500 consistent?
 
-        music.load();
-        music.play();
-        music.loop = true;
+        if(muted == 0) {
+            music.load();
+            music.play();
+            music.loop = true;
+        }
         // use event listener method instead?
     } else {
         playing = 0;
@@ -325,9 +401,50 @@ function cdplay() {
 
         music.pause();
         music.currentTime = 0;
-        // play eject sound?
 
-        cdunload.load();
-        cdunload.play();
+        if(!muted) {
+            cdunload.load();
+            cdunload.play();
+        }
     }
+}
+
+function mute() {
+    if(muted) {
+        document.getElementById("mute").style.backgroundImage = dark ? "url('images/unmuted.png')" : "url('images/unmuted5.png')";
+    } else {
+        document.getElementById("mute").style.backgroundImage = dark ? "url('images/muted.png')" : "url('images/muted5.png')";
+    }
+    muted = 1 - muted;
+
+    // if music is playing, should start (or keep) playing
+}
+
+function darkmode() {
+    document.getElementById("switch").style.backgroundImage = dark ? "url('images/switch_on.png')" : "url('images/switch_off.png')";
+    dark = 1 - dark;
+    localStorage.setItem("darkMode", dark ? true : false);
+    recolor();
+}
+
+function spawncircle() {
+    let circle = document.createElement("img");
+    // apparently if the gif has limited loops, it needs to be reloaded so it doesnt stop playing forever (lame)
+    // circle.src = Math.random() < 0.5 ? "images/circle.gif?" + new Date().getTime() : "images/circle2.gif?" + new Date().getTime();
+    circle.src = (dark ? "images/circle2.gif?" : "images/circle.gif?") + new Date().getTime();
+    circle.classList.add("circle");
+    const size = Math.floor(Math.random() * 300) + 100;
+    circle.style.width = `${size}px`;
+    circle.style.height = `${size}px`;
+
+    const xrange = window.innerWidth - 750;
+    const xpos_pre = Math.random() * xrange;
+    const xpos = xpos_pre < xrange/2 ? xpos_pre + 100 : xpos_pre + 650;
+    const ypos = Math.random() * (window.innerHeight - 200) + 100;
+    circle.style.left = `${xpos}px`;
+    circle.style.top = `${ypos}px`;
+    document.getElementById("page").appendChild(circle);
+    setTimeout(() => {
+        document.getElementById("page").removeChild(circle);
+    }, 1000);
 }

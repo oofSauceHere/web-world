@@ -3,7 +3,7 @@ const terminal = document.getElementById("terminal");
 const canvas = document.getElementById("font-test");
 
 // global variables... probably want to change the name here?
-let terminaltext = "Real Terminal (Not Fake)<br/>(c) oofSauce. All rights reserved.";
+let terminaltext = "Real Terminal (Not Fake)<br/>(C) oofSauce. All rights reserved.";
 let command = "";
 let promptString = "user@web-world:~$";
 let dir = ["home", "user"]
@@ -22,16 +22,17 @@ const filesystem = {
     // easy enough to add projects here
     "/home/user/projects": ["misc", "gartic-phone-operator.txt", "screenwriter.txt",
                             "silent-filmifier.txt", "spotifymc.txt", "web-world.txt",],
-    "/home/user/projects/misc": ["color-picker.txt", "frok.txt", "nathan.txt"],
+    "/home/user/projects/misc": ["readme.txt", "color-picker.txt", "frok.txt", "nathan.txt"],
 }
 
 // files and their contents
 const files = {
-    "info.txt": "hello, test",
+    "info.txt": "hello, test", // also readme?
     "secret.txt": "i don't know what you expected to find here. i mean, this isn't a real terminal. it's all fake. "
                   + "so there's like, what, 5 seconds of your life gone? i would count but im not "
                   + "there with you because im doing something more important. actually, its probably more than 5 now, "
-                  + "and more, and still more... and guess what? theres still nothing interesting here. goodbye!",
+                  + "and more, and still more... and guess what? theres still nothing interesting here. bye!",
+    "readme.txt": "here are some silly projects that are a little less... complicated.",
     "gartic-phone-operator.txt": "",
     "web-world.txt": "",
     "screenwriter.txt": "",
@@ -81,12 +82,20 @@ const printline = (line, ctrl, url = "") => {
         const phrases = line.split("\t");
         let linetr = "";
         let linetr_intr = "";
+        let empty = true;
         phrases.forEach((phrase) => {
             const words = phrase.split(" ");
             words.forEach((word) => {
-                // dont go to newline if current line is empty
+                if(empty && word == "") return;
+                empty = false;
+
                 if(getlinelength(linetr_intr + word) > 402) {
-                    linetr += linetr_intr == "" ? "" : "\n";
+                    if(linetr_intr == "") {
+                        linetr += "";
+                    } else {
+                        linetr += "\n";
+                        empty = true;
+                    }
                     linetr_intr = "";
                 }
 
@@ -96,13 +105,14 @@ const printline = (line, ctrl, url = "") => {
                     for(let i=0; i<word.length; i++) {
                         if(getlinelength(wordtr + word[i]) > 402*wordlinecnt) {
                             wordtr += "\n";
-                            // need to account for space between newline and end of terminal screen
                             wordlinecnt += 1;
                         }
                         wordtr += word[i];
                     }
                     linetr += wordtr + " ";
                 } else {
+                    if(empty && word == "") return;
+                    empty = false;
                     linetr_intr += word + " ";
                     linetr += word + " ";
                 }
@@ -111,9 +121,9 @@ const printline = (line, ctrl, url = "") => {
         });
 
         if(url == "") {
-            terminaltext += `<br/><span style='color: white'>${linetr}</span>`;
+            terminaltext += `<br/><span style='color: white'>${linetr.trim()}</span>`;
         } else {
-            terminaltext += `<br/><a href='${url}' target='_blank' style='color: lightblue'>${linetr}</a>`
+            terminaltext += `<br/><a href='${url}' target='_blank' style='color: lightblue'>${linetr.trim()}</a>`
         }
     } else {
         // or linetr logic?
@@ -166,7 +176,8 @@ window.onload = () => {
 
                 // execute multiple commands at once using semicolon separation?
 
-                if(command.trim() == "rm -rf /") {
+                if(command.trim().slice(0, 13) == "sudo rm -rf /" ||
+                   command.trim().slice(0, 8) == "rm -rf /") {
                     let explosion = document.createElement("img");
                     explosion.src = "images/explosion.gif";
                     explosion.id = "explosion";
@@ -257,17 +268,17 @@ window.onload = () => {
                         } else if(coms[1][0] == "~") {
                             dirstr = "/home/user" + coms[1].slice(1);
                         } else {
-                            dirstr = getdirstr() + "/" + coms[1];
+                            dirstr = getdirstr() + (getdirstr() == "/" ? "" : "/") + coms[1];
                         }
 
                         if(dirstr in filesystem) {
                             filelist = filesystem[dirstr];
-                            if(filelist.length > 0) printline(filelist.reduce((acc, cv) => acc + cv + "\t", "").slice(0, -1), false);
+                            if(filelist.length > 0) printline(filelist.reduce((acc, cv) => acc + cv + "    ", "").slice(0, -1), false);
                         } else {
                             printline(`ls: ${coms[1]}: No such file or directory.`);
                         }
                     } else {
-                        if(filelist.length > 0) printline(filelist.reduce((acc, cv) => acc + cv + "\t", "").slice(0, -1), false);
+                        if(filelist.length > 0) printline(filelist.reduce((acc, cv) => acc + cv + "    ", "").slice(0, -1), false);
                     }
                 } else if(coms[0] == "pwd") {
                     printline(getdirstr(), false);
@@ -349,9 +360,62 @@ window.onload = () => {
                 command = "";
                 linelen = 0;
             }
+            // arrow keys, tab completion (requires readInput overhaul)
 
             // always scroll to bottom of terminal
             terminal.scrollTop = terminal.scrollHeight;
         }
     }, 750);
 }
+
+
+
+// trying to implement the select box that's drawn whenever you click and drag on your desktop...
+// ...but its really not a cool or useful thing
+// let x = -1;
+// let y = -1;
+// window.addEventListener('mousedown', (event) => {
+//     x = event.clientX;
+//     y = event.clientY;
+
+//     const selectBox = document.createElement('div');
+//     selectBox.id = "selectBox";
+//     selectBox.style.position = "absolute";
+//     selectBox.style.backgroundColor = "rgb(71, 117, 255)";
+//     selectBox.style.opacity = "50%";
+//     selectBox.style.border = "2px solid lightblue";
+//     selectBox.style.left = `${x}px`;
+//     selectBox.style.top = `${y}px`;
+//     selectBox.style.zIndex = "9";
+//     document.body.appendChild(selectBox);
+// });
+
+// window.addEventListener('mousemove', (event) => {
+//     if(x == -1 || y == -1) return;
+//     const new_x = event.clientX;
+//     const new_y = event.clientY;
+
+//     const selectBox = document.getElementById("selectBox");
+
+//     if(new_x > x) {
+//         selectBox.style.width = `${new_x - x}px`;
+//     } else {
+//         selectBox.style.left = `${new_x}px`;
+//         selectBox.style.width = `${x - new_x}px`;
+//     }
+
+//     if(new_y > y) {
+//         selectBox.style.height = `${new_y - y}px`;
+//     } else {
+//         selectBox.style.top = `${new_y}px`;
+//         selectBox.style.height = `${y - new_y}px`;
+//     }
+// });
+
+// window.addEventListener('mouseup', (event) => {
+//     x = -1;
+//     y = -1;
+
+//     const selectBox = document.getElementById("selectBox");
+//     document.body.removeChild(selectBox);
+// });

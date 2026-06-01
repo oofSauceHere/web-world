@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>web world - bulletin</title>
+        <link rel="icon" id="favicon" type="image/x-icon" href="images/favicon-light.ico">
+        <link rel="stylesheet" href="styles/bulletin.css">
+        <script src="scripts/bulletin.js" defer></script>
+
+        <!-- IMPORTANT: INCLUDE LICENSE WITH ANY EMBEDDED FONTS -->
+    </head>
+    <body>
+        <div id="page" class="container">
+            <div id="bg">
+                <div id="layer"></div>
+            </div>
+            <div id="nav">
+                <ul>
+                    <li><a href="index.html">home</a></li>
+                    <li><a href="about.html">about</a></li>
+                    <li><a href="bulletin.html">[blog]</a></li>
+                    <li><a href="terminal.html">projects</a></li>
+                    <li><a href="media.html">writing</a></li>
+                </ul>
+                <div onclick="togglemenu()">
+                    <img src="images/menu.png"/>
+                </div>
+            </div>
+            <div id="mailbox">
+                <img class="mail" id="mail1" src="images/envelope.png"/>
+                <img class="mail" id="mail2" src="images/paper.png" onclick="redirect('bulletin/note1.html')"/>
+            </div>
+            <div id="next">
+                >
+            </div>
+            <div id="mute" onclick="mute()"></div>
+            <div id="switch" onclick="darkmode()"></div> 
+        </div>
+    </body>
+</html>

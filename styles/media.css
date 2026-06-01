@@ -1,0 +1,88 @@
+* {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+html {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    height: 100%;
+    width: 100%;
+}
+
+@font-face {
+    font-family: 'Courier Prime';
+    src: url('../fonts/CourierPrime-Bold.ttf');
+}
+
+.container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#page {
+    background-color: black;
+    background-image: url('../images/wall.jpg');
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+#menu {
+    height: calc(100vh - 4rem);
+    width: calc(400vh / 3 - 4rem);
+    padding: 2rem;
+    position: relative;
+}
+
+#nav {
+    height: 50%;
+    width: 40%;
+    /* background-color: rgba(0, 0, 0, 0.5); */
+    position: absolute;
+    bottom: 5vh;
+    right: 5vh;
+
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+}
+
+#nav > a {
+    font-size: 7vh;
+    font-family: 'Courier Prime';
+    text-decoration: none;
+    color: #a61c00; /* #6c080a; */
+    /* text-shadow: 5px 5px 2px rgb(192, 192, 192); */
+    margin: auto;
+    overflow: visible;
+    letter-spacing: -0.5vh;
+}
+
+h1 {
+    font-size: 10vh;
+    font-family: 'Courier Prime';
+    width: 60vh;
+    position: absolute;
+    /* left: 7.5vh;
+    bottom: 7.5vh; */
+    top: 7.5vh;
+    right: 7.5vh;
+    text-align: right;
+    color: rgb(10, 0, 60);
+    letter-spacing: calc(-5vh / 7);
+}
+
+#nav > a:nth-child(odd) {
+    transform: rotate(-5deg);
+}
+
+#nav > a:nth-child(even) {
+    transform: rotate(5deg);    
+}

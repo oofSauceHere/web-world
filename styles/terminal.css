@@ -33,11 +33,20 @@ body {
 }
 
 #page {
-    background-color: black;
-    background-image: url('../images/aero.png');
+    /* background-color: black; */
+    background-image: url('../images/leaves_pix.png');
     background-position: center;
+    background-size: cover;
+    /* grid: 2fr 1fr; */
+    background-color: black;
+    /* background-image: url('../images/aero.png');
+    background-position: left;
     background-size: contain;
-    background-repeat: no-repeat;
+    background-repeat: no-repeat; */
+    /* background-image: url('../images/space4.png'); */
+    /* background-image: url('../images/xp_pix.jpg');
+    background-position: center;
+    background-size: cover; */
 }
 
 #monitor {
@@ -47,15 +56,19 @@ body {
     justify-content: center;
     align-items: center;
     position: absolute;
+    left: 5%;
 
     transform: scaleX(calc(200%/3)) scaleY(150%);
     animation: deform 0.5s 0.05s steps(1, end) forwards;
+    /* transform: scale(0%);
+    animation: zoom 0.5s 0.05s ease-in-out forwards; */
 }
 
 #crt {
     height: 600px;
     width: 600px;
     position: absolute;
+    image-rendering: pixelated;
 }
 
 #screen {
@@ -80,9 +93,8 @@ body {
     font-size: 24px;
     font-family: 'Tiny 5';
     white-space: pre;
-    /* pointer-events: none; */
-    /* overflow-y: scroll;
-    scrollbar-width: none; */
+    overflow-y: scroll;
+    scrollbar-width: none;
 
     animation: appear 0.5s steps(1, end) forwards;
 }
@@ -94,8 +106,18 @@ body {
 #explosion {
     width: 710px;
     height: 1000px;
+    left: 5%;
     image-rendering: pixelated;
     position: absolute;
+}
+
+#fan1 {
+    height: 300px;
+    width: 300px;
+    position: absolute;
+    left: calc(10% + 600px);
+    top: calc(50vh - 300px);
+    image-rendering: pixelated;
 }
 
 @keyframes appear {
@@ -128,4 +150,14 @@ body {
   100% {
     transform: scaleX(100%) scaleY(100%);
   }
+}
+
+@keyframes zoom {
+    0% {
+        transform: scale(0%);
+    }
+
+    100% {
+        transform: scale(100%);
+    }
 }
