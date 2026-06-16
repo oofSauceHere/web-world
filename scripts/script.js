@@ -118,7 +118,6 @@ function recolor() {
         document.getElementById("accent").style.color = "#990000";
     } else {
         // document.getElementById("page").style.backgroundImage = "url('images/city_blue.png')";
-        // document.getElementById("bg").style.backgroundImage = "linear-gradient(white 0%, #acf4ff 100%)";
         document.getElementById("bg").style.backgroundImage = "linear-gradient(white 0%, #92f0ff 100%)";
         // document.getElementById("bg").style.backgroundImage = "linear-gradient(transparent 0%, transparent 50%, #acf4ff 100%)";
         document.getElementById("grid").style.backgroundImage = "linear-gradient(to right, white 1px, transparent 1px), linear-gradient(to bottom, white 1px, transparent 1px)"
