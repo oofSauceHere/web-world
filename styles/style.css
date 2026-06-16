@@ -13,10 +13,7 @@ body {
   height: 100%;
   width: 100%;
 
-  background-color: white;
-  background-image: url("../images/city_blue.png");
-  background-size: cover;
-  background-position: center;
+  background-color: #001329;
 }
 
 @font-face {
@@ -40,6 +37,15 @@ body {
   src: url('../fonts/QuinqueFive.ttf');
 }
 
+#aperture {
+  height: 100%;
+  width: 100%;
+  overflow: visible;
+  position: absolute;
+
+  clip-path: circle(0%);
+}
+
 /* dark mode? */
 #bg {
   position: absolute;
@@ -50,16 +56,6 @@ body {
   /* background-image: linear-gradient(white 0%, #acf4ff 100%); */
   background-image: linear-gradient(transparent 0%, transparent 50%, #acf4ff 100%);
   /* animation: iris ease-out 2s 2s forwards; */
-}
-
-@keyframes iris {
-  from {
-    clip-path: circle(0% at 50% 50%);
-  }
-
-  to {
-    clip-path: circle(100% at 50% 50%)
-  }
 }
 
 #grid {
@@ -78,59 +74,31 @@ body {
   background-image:
     linear-gradient(to right, white 1px, transparent 1px),
     linear-gradient(to bottom, white 1px, transparent 1px);
-  /* background-image:
-    linear-gradient(to right, grey 1px, transparent 1px),
-    linear-gradient(to bottom, grey 1px, transparent 1px); */
   animation: move linear 1s infinite;
-  /* animation: move linear 1s infinite, bg-shake 0.2s 0.5s steps(1, end); */
 }
-
-/* @keyframes bg-shake {
-  0% {
-    transform: rotate(22.5deg) translate(-50%, 5px);
-  }
-
-  50% {
-    transform: rotate(22.5deg) translate(-50%, 20px);
-  }
-
-  100% {
-    transform: rotate(22.5deg) translate(calc(-50% + 40px), 40px);
-  }
-} */
 
 @keyframes move {
   from {
-    /* transform: translate(-40px, -40px); */
     transform: rotate(22.5deg) translate(-50%, 0);
   }
 
   to {
-    /* transform: translate(0, 0); */
     transform: rotate(22.5deg) translate(calc(-50% + 40px), 40px);
   }
 }
 
-#space {
-  background-image: url("../images/space4.png");
-  /* water maybe? */
-  /* mask-image: url("https://upload.wikimedia.org/wikipedia/commons/a/a8/Ski_trail_rating_symbol_black_circle.png"); */
-  position: absolute;
-}
-
-#space>img {
-  position: absolute;
-  mask-type: alpha;
-}
-
-#enter {
-  transform: translateY(-90px);
-}
-
 #page {
+  height: 100%;
+  width: 100%;
   position: absolute;
-  transform: scale(0);
-  transition: transform 1.5s ease-out;
+
+  background-color: white;
+  /* background-image: url("../images/city_blue.png"); */
+  background-size: cover;
+  background-position: center;
+
+  animation: inherit;
+  animation-direction: reverse;
 }
 
 .container {
@@ -139,20 +107,6 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-#door {
-  margin-right: auto;
-  transition: transform 1s cubic-bezier(1, 0, 1, 0);
-  /* note: negative numbers mess things up in a fun way */
-  cursor: pointer;
-  transform: scale(125%);
-}
-
-#door2 {
-  margin-left: auto;
-  margin-right: 2.5em;
-  transform: scale(50%);
 }
 
 #pfp {
@@ -267,6 +221,8 @@ body {
   cursor: pointer;
   position: absolute;
   z-index: 9;
+  visibility: hidden;
+  pointer-events: none;
 }
 
 #cd:hover {

@@ -9,31 +9,33 @@
         <!-- IMPORTANT: INCLUDE LICENSE WITH ANY EMBEDDED FONTS -->
     </head>
     <body>
-        <div id="page" class="container">
-            <div id="bg">
-                <div id="layer"></div>
-            </div>
-            <div id="nav">
-                <ul>
-                    <li><a href="index.html">home</a></li>
-                    <li><a href="about.html">about</a></li>
-                    <li><a href="bulletin.html">[blog]</a></li>
-                    <li><a href="terminal.html">projects</a></li>
-                    <li><a href="media.html">writing</a></li>
-                </ul>
-                <div onclick="togglemenu()">
-                    <img src="images/menu.png"/>
+        <div id="aperture">
+            <div id="page" class="container">
+                <div id="bg">
+                    <div id="layer"></div>
                 </div>
+                <div id="nav">
+                    <ul>
+                        <li><a onclick="redirect('index.html')">home</a></li>
+                        <li><a onclick="redirect('about.html')">about</a></li>
+                        <li><a id="selected" onclick="redirect('bulletin.html')">blog</a></li>
+                        <li><a onclick="redirect('terminal.html')">projects</a></li>
+                        <li><a onclick="redirect('media.html')">writing</a></li>
+                    </ul>
+                    <div onclick="togglemenu()">
+                        <img src="images/menu.png"/>
+                    </div>
+                </div>
+                <div id="mailbox">
+                    <img class="mail" id="mail1" src="images/envelope.png"/>
+                    <img class="mail" id="mail2" src="images/paper.png" onclick="redirect('bulletin/note1.html')"/>
+                </div>
+                <div id="next">
+                    >
+                </div>
+                <div id="mute" onclick="mute()"></div>
+                <div id="switch" onclick="darkmode()"></div> 
             </div>
-            <div id="mailbox">
-                <img class="mail" id="mail1" src="images/envelope.png"/>
-                <img class="mail" id="mail2" src="images/paper.png" onclick="redirect('bulletin/note1.html')"/>
-            </div>
-            <div id="next">
-                >
-            </div>
-            <div id="mute" onclick="mute()"></div>
-            <div id="switch" onclick="darkmode()"></div> 
         </div>
     </body>
 </html>

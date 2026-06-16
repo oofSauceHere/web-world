@@ -14,6 +14,41 @@ html {
 body {
     height: 100%;
     width: 100%;
+
+    background-color: rgb(0, 19, 41);
+}
+
+#aperture {
+  height: 100%;
+  width: 100%;
+  overflow: visible;
+  position: absolute;
+
+  clip-path: circle(0%);
+}
+
+@keyframes spinfixed {
+  0% {
+    rotate: 0deg;
+  }
+  100% {
+    rotate: 360deg;
+  }
+}
+
+@keyframes spinfixedrev {
+  0% {
+    rotate: 0deg;
+  }
+  100% {
+    rotate: -360deg;
+  }
+}
+
+#page {
+    height: 100%;
+    width: 100%;
+
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -22,10 +57,14 @@ body {
     /* background-image: url('../images/landscape1_pix.png');
     background-position: center;
     background-size: cover; */
+
+    animation: inherit;
+    animation-direction: reverse;
 }
 
 a {
     text-decoration: none;
+    cursor: pointer;
 }
 
 a:hover {
@@ -61,6 +100,10 @@ a:hover {
 #nav > a {
     color: white;
     font-weight: normal;
+}
+
+#selected {
+    text-decoration: underline;
 }
 
 table {

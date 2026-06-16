@@ -43,8 +43,101 @@ function getCoords(element) {
     return [(rect.left + rect.right)/2, (rect.top + rect.bottom)/2];
 }
 
-// need quick load (dont have to do door shit every time)
-function quickload() {
+function iris(rev) {
+    const start = rev ? `circle(0% at ${window.innerWidth / 2}px ${window.innerHeight / 2}px)` : `circle(${100.0/Math.sqrt(2)}% at ${window.innerWidth / 2}px ${window.innerHeight / 2}px)`;
+    const end = rev ? `circle(${100.0/Math.sqrt(2)}% at ${window.innerWidth / 2}px ${window.innerHeight / 2}px)` : `circle(0% at ${window.innerWidth / 2}px ${window.innerHeight / 2}px)`;
+    const anim = document.getElementById("aperture").animate([
+        {
+            clipPath: start
+        },
+        {
+            clipPath: end
+        }
+    ], {
+        duration: 1500,
+        fill: "forwards",
+        easing: "ease-in" // cubic-bezier(.47,.01,1,.45)
+    });
+
+    // the clip path is designed to stop right outside the current window size,
+    // so you will be able to see it if you zoom. in order to override clip-path,
+    // though, we need to end the animation so its clip-path value doesn't take
+    // precedence.
+    if(rev) {
+        setTimeout(() => {
+            anim.cancel();
+            document.getElementById("aperture").style.clipPath = "none";
+        }, 2000);
+    }
+
+    // const width = window.innerWidth;
+    // const height = window.innerHeight;
+
+    // document.getElementById("aperture").style.visibility = "visible";
+    // document.getElementById("aperture").style.maskImage = `url('test/mask.svg'), linear-gradient(#ffffff, #ffffff)`;
+    // document.getElementById("aperture").style.maskPosition = `center center`;
+    // document.getElementById("aperture").style.maskMode = `luminance`;
+    // document.getElementById("aperture").style.maskRepeat = `no-repeat`;
+    // document.getElementById("aperture").style.maskComposite = `exclude`;
+
+    // const diagonal = Math.sqrt(width*width + height*height);
+    // const start = rev ? `0 0, ${width}px ${height}px` : `${diagonal}px ${diagonal}px, ${width}px ${height}px`;
+    // const end = rev ? `${diagonal}px ${diagonal}px, ${width}px ${height}px` : `0 0, ${width}px ${height}px`;
+    // const anim = document.getElementById("aperture").animate([
+    //     {
+    //         maskSize: start
+    //     },
+    //     {
+    //         maskSize: end
+    //     }
+    // ], {
+    //     duration: 1500,
+    //     fill: "forwards",
+    //     easing: "ease-in" // cubic-bezier(.47,.01,1,.45)
+    // });
+
+    // if(rev) {
+    //     setTimeout(() => {
+    //         document.getElementById("aperture").style.visibility = "hidden";
+    //     }, 1500);
+    // }
+}
+
+function recolor() {
+    if(dark) {
+        // document.getElementById("page").style.backgroundImage = "url('images/city_black.png')";
+        document.getElementById("bg").style.backgroundImage = "linear-gradient(black 0%, grey 100%)"
+        // document.getElementById("bg").style.backgroundImage = "linear-gradient(transparent 0%, transparent 50%, black 100%)";
+        document.getElementById("grid").style.backgroundImage = "linear-gradient(to right, grey 1px, transparent 1px), linear-gradient(to bottom, grey 1px, transparent 1px)"
+        document.getElementById("bubble1").src = "images/bubble1_red.png";
+        document.getElementById("bubble2").src = "images/bubble2_red.png";
+        document.getElementById("bubble3").src = "images/bubble3_red.png";
+        document.getElementById("connectors").src = "images/connectors3.png";
+        document.getElementById("mute").style.backgroundImage = muted ? "url(images/muted.png)" : "url(images/unmuted.png)";
+        document.getElementById("realclock").style.color = "#e8075d";
+        document.getElementById("accent").style.color = "#990000";
+    } else {
+        // document.getElementById("page").style.backgroundImage = "url('images/city_blue.png')";
+        // document.getElementById("bg").style.backgroundImage = "linear-gradient(white 0%, #acf4ff 100%)";
+        document.getElementById("bg").style.backgroundImage = "linear-gradient(white 0%, #92f0ff 100%)";
+        // document.getElementById("bg").style.backgroundImage = "linear-gradient(transparent 0%, transparent 50%, #acf4ff 100%)";
+        document.getElementById("grid").style.backgroundImage = "linear-gradient(to right, white 1px, transparent 1px), linear-gradient(to bottom, white 1px, transparent 1px)"
+        document.getElementById("bubble1").src = "images/bubble1.png";
+        document.getElementById("bubble2").src = "images/bubble2.png";
+        document.getElementById("bubble3").src = "images/bubble3.png";
+        document.getElementById("connectors").src = "images/connectors.png";
+        document.getElementById("mute").style.backgroundImage = muted ? "url(images/muted5.png)" : "url(images/unmuted5.png)";
+        document.getElementById("realclock").style.color = "#e86207";
+        document.getElementById("accent").style.color = "#3cc3d8";
+    }
+}
+
+window.onload = () => {
+    recolor();
+    document.getElementById("switch").style.backgroundImage = dark ? "url('images/switch_off.png')" : "url('images/switch_on.png')";
+
+    iris(true);
+
     const now = new Date();
     const hours = now.getHours();
     const minutes = now.getMinutes();
@@ -68,167 +161,12 @@ function quickload() {
         element.style.pointerEvents = "none";
     });
 
-    cd.style.pointerEvents = "none";
-    cd.style.visibility = "hidden";
-    page.style.transform = "scale(1)";
-    page.style.transition = "none";
-
-    pfp.style.visibility = "visible";
-    pfp.style.pointerEvents = "none";
-    pfp.style.animation =
-        "appear 0.5s ease-in"; // do in steps? modify keyframes
-
-    setTimeout(() => {
-        ustatus.style.visibility = "visible";
-
-        interactables.forEach((element) => {
-            if(element.id != "cd" && !element.classList.contains("bubble")) {
-                const deg = Math.random() * Math.PI;
-                const [ x, y ] = getCoords(element);
-                const [ dX, dY ] = [ (x - wWidth/2), (y - wHeight/2)]
-                const offsetX = Math.cos(deg) * 10;
-                const offsetY = Math.sin(deg) * 10;
-
-                element.animate([
-                    {transform: `translate(${ dX + offsetX }px, ${ dY + offsetY }px)`},
-                    {transform: `translate(${ dX - offsetX }px, ${ dY - offsetY }px)`},
-                    {transform: `translate(${ dX }px, ${ dY }px)`}
-                ], {
-                    duration: 200,
-                    easing: "steps(3, end)"
-                });
-            }
-        });
-
-        const deg = Math.random() * Math.PI;
-        const [ x, y ] = getCoords(base);
-        const [ dX, dY ] = [ (x - wWidth/2), (y - wHeight/2)]
-        const offsetX = Math.cos(deg) * 10;
-        const offsetY = Math.sin(deg) * 10;
-
-        base.animate([
-            {transform: `translate(${ dX + offsetX }px, ${ dY + offsetY }px)`},
-            {transform: `translate(${ dX - offsetX }px, ${ dY - offsetY }px)`},
-            {transform: `translate(${ dX }px, ${ dY }px)`}
-        ], {
-            duration: 200,
-            easing: "steps(3, end)"
-        });
-    }, 600);
-
-    setTimeout(() => {
-        interactables.forEach((element) => {
-            if(element.id != "cd") {
-                element.style.pointerEvents = "auto";
-            }
-        });
-
-        cd.style.visibility = "visible";
-        cd.style.animation =
-            "peek 0.5s ease-out forwards";
-    }, 800);
-
-    setTimeout(() => {
-        cd.style.pointerEvents = "auto";
-        cd.style.transform =
-            "translate(-300px, -100px)";
-        cd.style.animation = "";
-    }, 1300);
-
-    setInterval(() => {
-        spawncircle();
-    }, 2500);
-}
-
-function recolor() {
-    if(dark) {
-        document.body.style.backgroundImage = "url('images/city_black.png')";
-        // document.getElementById("bg").style.backgroundImage = "linear-gradient(black 0%, grey 100%)"
-        document.getElementById("bg").style.backgroundImage = "linear-gradient(transparent 0%, transparent 50%, black 100%)";
-        document.getElementById("grid").style.backgroundImage = "linear-gradient(to right, grey 1px, transparent 1px), linear-gradient(to bottom, grey 1px, transparent 1px)"
-        document.getElementById("bubble1").src = "images/bubble1_red.png";
-        document.getElementById("bubble2").src = "images/bubble2_red.png";
-        document.getElementById("bubble3").src = "images/bubble3_red.png";
-        document.getElementById("connectors").src = "images/connectors3.png";
-        document.getElementById("mute").style.backgroundImage = muted ? "url(images/muted.png)" : "url(images/unmuted.png)";
-        document.getElementById("realclock").style.color = "#e8075d";
-        document.getElementById("accent").style.color = "#990000";
-    } else {
-        document.body.style.backgroundImage = "url('images/city_blue.png')";
-        // document.getElementById("bg").style.backgroundImage = "linear-gradient(white 0%, #acf4ff 100%)";
-        document.getElementById("bg").style.backgroundImage = "linear-gradient(transparent 0%, transparent 50%, #acf4ff 100%)";
-        document.getElementById("grid").style.backgroundImage = "linear-gradient(to right, white 1px, transparent 1px), linear-gradient(to bottom, white 1px, transparent 1px)"
-        document.getElementById("bubble1").src = "images/bubble1.png";
-        document.getElementById("bubble2").src = "images/bubble2.png";
-        document.getElementById("bubble3").src = "images/bubble3.png";
-        document.getElementById("connectors").src = "images/connectors.png";
-        document.getElementById("mute").style.backgroundImage = muted ? "url(images/muted5.png)" : "url(images/unmuted5.png)";
-        document.getElementById("realclock").style.color = "#e86207";
-        document.getElementById("accent").style.color = "#3cc3d8";
-    }
-}
-
-window.onload = () => {
-    recolor();
-    document.getElementById("switch").style.backgroundImage = dark ? "url('images/switch_off.png')" : "url('images/switch_on.png')";
-
-    if(loaded) {
-        quickload();
-    } else {
-        space.style.visibility = "visible";
-    }
-
-    const rand = Math.floor(Math.random() * 5);
-    document.getElementById("show").innerHTML = shows[rand];
-}
-
-function load() {
-    localStorage.setItem("loaded", "true");
-
-    setInterval(() => {
-        const now = new Date();
-        const hours = now.getHours();
-        const minutes = now.getMinutes();
-        document.getElementById("realclock").innerHTML = `${ hours%12 < 10 ? '0' : '' }${ hours%12 }:${ minutes }`;
-    }, 1000);
-
-    const wHeight = window.innerHeight;
-    const wWidth = window.innerWidth;
-
-    interactables.forEach((element) => {
-        element.style.pointerEvents = "none";
-    });
-
-    door.style.pointerEvents = "none";
-    door.src = "images/door_frames/door_frame2.png";
-
-    // fun with timeouts
-    setTimeout(() => {
-        door.src = "images/door_frames/door_frame3.png";
-    }, 500);
-
-    setTimeout(() => {
-        // document.getElementById("page").style.zIndex = 1;
-        // document.getElementById("space").style.zIndex = 0;
-
-        // document.getElementById("page").style.animation = "iris ease-out 2s forwards";
-
-        door.src = "images/door_frames/door_frame4.png";
-        door.style.transform = "scale(40)";
-    }, 1000);
-
-    setTimeout(() => {
-        cd.style.pointerEvents = "none";
-        cd.style.visibility = "hidden";
-        page.style.transform = "scale(1)";
-    }, 2500);
-
     setTimeout(() => {
         pfp.style.visibility = "visible";
         pfp.style.pointerEvents = "none";
         pfp.style.animation =
             "appear 0.5s ease-in"; // do in steps? modify keyframes
-    }, 3500);
+    }, 1000);
 
     setTimeout(() => {
         ustatus.style.visibility = "visible";
@@ -266,7 +204,7 @@ function load() {
             duration: 200,
             easing: "steps(3, end)"
         });
-    }, 4100);
+    }, 1600);
 
     setTimeout(() => {
         interactables.forEach((element) => {
@@ -278,14 +216,21 @@ function load() {
         cd.style.visibility = "visible";
         cd.style.animation =
             "peek 0.5s ease-out forwards";
-    }, 4300);
+    }, 1800);
 
     setTimeout(() => {
         cd.style.pointerEvents = "auto";
         cd.style.transform =
             "translate(-300px, -100px)";
         cd.style.animation = "";
-    }, 4800);
+    }, 2300);
+
+    setInterval(() => {
+        spawncircle();
+    }, 1500);
+
+    const rand = Math.floor(Math.random() * shows.length);
+    document.getElementById("show").innerHTML = shows[rand];
 }
 
 function ding1() {
@@ -333,7 +278,12 @@ function water() {
 
 function redirect(url) {
     water();
-    window.location.href = url;
+    
+    iris(false);
+
+    setTimeout(() => {
+        window.location.href = url;
+    }, 1750);
 }
 
 function tvpower() {
@@ -432,6 +382,7 @@ function spawncircle() {
     // apparently if the gif has limited loops, it needs to be reloaded so it doesnt stop playing forever (lame)
     // circle.src = Math.random() < 0.5 ? "images/circle.gif?" + new Date().getTime() : "images/circle2.gif?" + new Date().getTime();
     circle.src = (dark ? "images/circle2.gif?" : "images/circle.gif?") + new Date().getTime();
+    circle.draggable = false;
     circle.classList.add("circle");
     const size = Math.floor(Math.random() * 300) + 100;
     circle.style.width = `${size}px`;

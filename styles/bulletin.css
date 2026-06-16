@@ -13,6 +13,7 @@ body {
   height: 100%;
   width: 100%;
 
+  background-color: #001329;
 }
 
 @font-face {
@@ -29,6 +30,33 @@ body {
 @font-face {
   font-family: 'Bold Pixels';
   src: url('../fonts/BoldPixels.ttf');
+}
+
+#aperture {
+  height: 100%;
+  width: 100%;
+  overflow: visible;
+  position: absolute;
+
+  clip-path: circle(0%);
+}
+
+@keyframes spinfixed {
+  0% {
+    rotate: 0deg;
+  }
+  100% {
+    rotate: 360deg;
+  }
+}
+
+@keyframes spinfixedrev {
+  0% {
+    rotate: 0deg;
+  }
+  100% {
+    rotate: -360deg;
+  }
 }
 
 /* dark mode? */
@@ -65,7 +93,12 @@ body {
 }
 
 #page {
+  height: 100%;
+  width: 100%;
   position: absolute;
+
+  animation: inherit;
+  animation-direction: reverse;
 }
 
 .container {
@@ -145,14 +178,19 @@ body {
 #nav li a {
   color: white;
   text-decoration: none;
+  cursor: pointer;
 }
 
-#nav li a:hover {
+#nav li a:not(#selected):hover {
   transform: scale(110%);
 }
 
 #nav li a:active {
   transform: scale(105%);
+}
+
+#selected {
+  transform: scale(110%);
 }
 
 @keyframes spin {
