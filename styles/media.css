@@ -79,6 +79,11 @@ h1 {
     text-align: right;
     color: rgb(10, 0, 60);
     letter-spacing: calc(-5vh / 7);
+    text-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
+}
+
+#nav > a {
+    text-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
 }
 
 #nav > a:nth-child(odd) {

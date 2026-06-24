@@ -105,10 +105,12 @@ function iris(rev) {
 
 function recolor() {
     if(dark) {
+        document.getElementById("aperture").style.cursor = "url('images/cursor2.png') 8 0, auto";
         // document.getElementById("page").style.backgroundImage = "url('images/city_black.png')";
-        document.getElementById("bg").style.backgroundImage = "linear-gradient(black 0%, grey 100%)"
+        // document.getElementById("bg").style.backgroundImage = "linear-gradient(black 0%, grey 100%)"
         // document.getElementById("bg").style.backgroundImage = "linear-gradient(transparent 0%, transparent 50%, black 100%)";
-        document.getElementById("grid").style.backgroundImage = "linear-gradient(to right, grey 1px, transparent 1px), linear-gradient(to bottom, grey 1px, transparent 1px)"
+        // document.getElementById("grid").style.backgroundImage = "linear-gradient(to right, grey 1px, transparent 1px), linear-gradient(to bottom, grey 1px, transparent 1px)"
+        document.getElementById("grid").style.backgroundImage = "url('images/space4.png')";
         document.getElementById("bubble1").src = "images/bubble1_red.png";
         document.getElementById("bubble2").src = "images/bubble2_red.png";
         document.getElementById("bubble3").src = "images/bubble3_red.png";
@@ -117,10 +119,14 @@ function recolor() {
         document.getElementById("realclock").style.color = "#e8075d";
         document.getElementById("accent").style.color = "#990000";
     } else {
+        document.getElementById("aperture").style.cursor = "url('images/cursor.png') 8 0, auto";
         // document.getElementById("page").style.backgroundImage = "url('images/city_blue.png')";
-        document.getElementById("bg").style.backgroundImage = "linear-gradient(white 0%, #92f0ff 100%)";
+        document.getElementById("bg").style.backgroundImage = "linear-gradient(to bottom left, white 0%, #92f0ff 100%)";
+        // document.getElementById("bg").style.backgroundImage = "linear-gradient(to bottom right, #92f0ff 0%, white 50%, #92f0ff 100%)";
+        // document.getElementById("bg").style.backgroundColor = "#92f0ff";
         // document.getElementById("bg").style.backgroundImage = "linear-gradient(transparent 0%, transparent 50%, #acf4ff 100%)";
-        document.getElementById("grid").style.backgroundImage = "linear-gradient(to right, white 1px, transparent 1px), linear-gradient(to bottom, white 1px, transparent 1px)"
+        // document.getElementById("grid").style.backgroundImage = "linear-gradient(to right, white 1px, transparent 1px), linear-gradient(to bottom, white 1px, transparent 1px)"
+        document.getElementById("grid").style.backgroundImage = "url('images/tile.png')";
         document.getElementById("bubble1").src = "images/bubble1.png";
         document.getElementById("bubble2").src = "images/bubble2.png";
         document.getElementById("bubble3").src = "images/bubble3.png";
@@ -224,9 +230,9 @@ window.onload = () => {
         cd.style.animation = "";
     }, 2300);
 
-    setInterval(() => {
-        spawncircle();
-    }, 1500);
+    // setInterval(() => {
+    //     spawncircle();
+    // }, 1500);
 
     const rand = Math.floor(Math.random() * shows.length);
     document.getElementById("show").innerHTML = shows[rand];
