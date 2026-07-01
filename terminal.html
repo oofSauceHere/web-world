@@ -3,20 +3,17 @@
     <head>
         <title>web world - terminal</title>
         <link rel="icon" id="favicon" type="image/x-icon" href="images/favicon-light.ico">
-        <link rel="stylesheet" href="styles/terminal.css">
-        <script src="scripts/terminal.js" defer></script>
+        <link rel="stylesheet" href="styles/terminal2.css">
+        <script src="scripts/terminal2.js" defer></script>
 
         <!-- IMPORTANT: INCLUDE LICENSE WITH ANY EMBEDDED FONTS -->
     </head>
     <body>
         <div id="page" class="container">
-            <div id="monitor">
-                <div id="screen"></div>
-                <img id="crt" src="images/crt.png" draggable="false"/>
-                <!-- cant highlight this text because its under like 5 layers -->
+            <div id="screen">
+                <div id="terminalborder"></div>
                 <div id="terminal"></div>
             </div>
-            <img id="fan1" src="images/fan.gif"/>
             <canvas id="font-test"></canvas>
         </div>
     </body>

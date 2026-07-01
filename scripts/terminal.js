@@ -9,6 +9,7 @@ let promptString = "user@web-world:~$";
 let dir = ["home", "user"]
 let linelen = 0;
 let linecnt = 1;
+let MAX_WIDTH = 576;
 
 function redirect(url) {
     window.location.href = url;
@@ -61,12 +62,12 @@ const getlinelength = (line) => {
     const context = canvas.getContext("2d");
     context.font = "normal 24px 'Tiny 5'";
     const linedata = context.measureText(line);
-    return linedata.width
+    return linedata.width;
 }
 
 // process terminal keypress inputs
 const readinput = (key) => {
-    if(getlinelength(promptString + " " + command + key) > 402*linecnt) {
+    if(getlinelength(promptString + " " + command + key) > MAX_WIDTH*linecnt) {
         terminaltext += "\n";
         // need to account for space between newline and end of terminal screen
         linecnt += 1;
@@ -89,7 +90,7 @@ const printline = (line, ctrl, url = "") => {
                 if(empty && word == "") return;
                 empty = false;
 
-                if(getlinelength(linetr_intr + word) > 402) {
+                if(getlinelength(linetr_intr + word) > MAX_WIDTH) {
                     if(linetr_intr == "") {
                         linetr += "";
                     } else {
@@ -101,9 +102,9 @@ const printline = (line, ctrl, url = "") => {
 
                 let wordlinecnt = 1;
                 let wordtr = "";
-                if(getlinelength(word) > 402) {
+                if(getlinelength(word) > MAX_WIDTH) {
                     for(let i=0; i<word.length; i++) {
-                        if(getlinelength(wordtr + word[i]) > 402*wordlinecnt) {
+                        if(getlinelength(wordtr + word[i]) > MAX_WIDTH*wordlinecnt) {
                             wordtr += "\n";
                             wordlinecnt += 1;
                         }
@@ -148,7 +149,10 @@ window.onload = () => {
     // show terminal
     setTimeout(() => {
         terminal.innerHTML = terminaltext;
-    }, 550);
+        terminal.style.padding = "15px";
+        terminal.style.width = "calc(100% - 40px)";
+        terminal.style.height = "calc(100% - 40px)";
+    }, 3500);
 
     setTimeout(() => {
         // show primary prompt string
@@ -365,7 +369,7 @@ window.onload = () => {
             // always scroll to bottom of terminal
             terminal.scrollTop = terminal.scrollHeight;
         }
-    }, 750);
+    }, 3700);
 }
 
 

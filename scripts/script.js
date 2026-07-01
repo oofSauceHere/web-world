@@ -115,7 +115,6 @@ function recolor() {
         document.getElementById("bubble2").src = "images/bubble2_red.png";
         document.getElementById("bubble3").src = "images/bubble3_red.png";
         document.getElementById("connectors").src = "images/connectors3.png";
-        document.getElementById("mute").style.backgroundImage = muted ? "url(images/muted.png)" : "url(images/unmuted.png)";
         document.getElementById("realclock").style.color = "#e8075d";
         document.getElementById("accent").style.color = "#990000";
     } else {
@@ -131,8 +130,7 @@ function recolor() {
         document.getElementById("bubble2").src = "images/bubble2.png";
         document.getElementById("bubble3").src = "images/bubble3.png";
         document.getElementById("connectors").src = "images/connectors.png";
-        document.getElementById("mute").style.backgroundImage = muted ? "url(images/muted5.png)" : "url(images/unmuted5.png)";
-        document.getElementById("realclock").style.color = "#e86207";
+        document.getElementById("realclock").style.color = "#e8075d";
         document.getElementById("accent").style.color = "#3cc3d8";
     }
 }
