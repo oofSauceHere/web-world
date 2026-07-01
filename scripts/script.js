@@ -363,11 +363,7 @@ function cdplay() {
 }
 
 function mute() {
-    if(muted) {
-        document.getElementById("mute").style.backgroundImage = dark ? "url('images/unmuted.png')" : "url('images/unmuted5.png')";
-    } else {
-        document.getElementById("mute").style.backgroundImage = dark ? "url('images/muted.png')" : "url('images/muted5.png')";
-    }
+    document.getElementById("mute").style.backgroundImage = muted ? "url('images/unmuted.png')" : "url('images/muted.png')";
     muted = 1 - muted;
 
     // if music is playing, should start (or keep) playing

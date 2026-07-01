@@ -152,7 +152,7 @@ window.onload = () => {
         terminal.style.padding = "15px";
         terminal.style.width = "calc(100% - 40px)";
         terminal.style.height = "calc(100% - 40px)";
-    }, 3500);
+    }, 5500);
 
     setTimeout(() => {
         // show primary prompt string
@@ -369,7 +369,7 @@ window.onload = () => {
             // always scroll to bottom of terminal
             terminal.scrollTop = terminal.scrollHeight;
         }
-    }, 3700);
+    }, 5700);
 }
 
 
