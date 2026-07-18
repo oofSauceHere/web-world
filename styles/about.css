@@ -53,10 +53,8 @@ body {
     flex-direction: column;
     align-items: center;
     background-color: #e3e3e3;
-    /* background-image: url('../images/space4.png'); */
-    /* background-image: url('../images/landscape1_pix.png');
-    background-position: center;
-    background-size: cover; */
+
+    color: black;
 
     animation: inherit;
     animation-direction: reverse;
@@ -77,10 +75,39 @@ a:hover {
     height: 100px;
     display: flex;
     align-items: center;
+    justify-content: space-between;
+
+    overflow: visible;
 }
 
-#title > img {
+#logo {
     height: 75px;
+    width: 300px;
+    background-color: black;
+    color: white;
+    font-size: 1.5rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    translate: -25px;
+}
+
+#search {
+    height: calc(100% - 30px);
+    width: 300px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    justify-content: space-between;
+
+    color: white;
+}
+
+#search button {
+    background-color: #ddeeff;
 }
 
 #nav {

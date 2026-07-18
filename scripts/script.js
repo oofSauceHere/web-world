@@ -7,8 +7,10 @@ let tvon = new Audio("audio/tvon2.wav"); // https://freesound.org/people/Cloud-1
 let tick1 = new Audio("audio/tick1.wav"); // https://freesound.org/people/michael_grinnell/sounds/464402/
 let tick2 = new Audio("audio/tick2.wav"); // https://freesound.org/people/michael_grinnell/sounds/464402/
 let cdload = new Audio("audio/cdload.wav"); // https://freesound.org/people/jrssandoval/sounds/67154/
-let cdunload = new Audio("audio/cdunload.wav");
+let cdunload = new Audio("audio/cdunload.wav"); // where is this from?
 let music = new Audio("audio/eshop.wav"); // NINTENDO MUSIC - CHANGE LATER
+
+let audio = [tap, crack, drop, tvon, tick1, tick2, cdload, cdunload, music];
 
 let space = document.getElementById("space");
 let door = document.getElementById("door");
@@ -54,7 +56,7 @@ function iris(rev) {
             clipPath: end
         }
     ], {
-        duration: 1500,
+        duration: 1250,
         fill: "forwards",
         easing: "ease-in" // cubic-bezier(.47,.01,1,.45)
     });
@@ -111,31 +113,37 @@ function recolor() {
         // document.getElementById("bg").style.backgroundImage = "linear-gradient(transparent 0%, transparent 50%, black 100%)";
         // document.getElementById("grid").style.backgroundImage = "linear-gradient(to right, grey 1px, transparent 1px), linear-gradient(to bottom, grey 1px, transparent 1px)"
         document.getElementById("grid").style.backgroundImage = "url('images/space4.png')";
-        document.getElementById("bubble1").src = "images/bubble1_red.png";
-        document.getElementById("bubble2").src = "images/bubble2_red.png";
-        document.getElementById("bubble3").src = "images/bubble3_red.png";
+        document.getElementById("bubble1").src = "images/bubble2_red.png";
+        document.getElementById("bubble2").src = "images/bubble3_red.png";
+        document.getElementById("bubble3").src = "images/bubble1_red.png";
         document.getElementById("connectors").src = "images/connectors3.png";
-        document.getElementById("realclock").style.color = "#e8075d";
+        document.getElementById("realclock").style.color = "rgb(58, 67, 75)";
         document.getElementById("accent").style.color = "#990000";
+        document.getElementById("mute").style.backgroundImage = muted ? "url('images/muted5.png')" : "url('images/unmuted5.png')";
     } else {
         document.getElementById("aperture").style.cursor = "url('images/cursor.png') 8 0, auto";
         // document.getElementById("page").style.backgroundImage = "url('images/city_blue.png')";
-        document.getElementById("bg").style.backgroundImage = "linear-gradient(to bottom left, white 0%, #92f0ff 100%)";
+        document.getElementById("bg").style.backgroundImage = "linear-gradient(to bottom left, white 0%, #c9c9c9 100%)";
         // document.getElementById("bg").style.backgroundImage = "linear-gradient(to bottom right, #92f0ff 0%, white 50%, #92f0ff 100%)";
         // document.getElementById("bg").style.backgroundColor = "#92f0ff";
         // document.getElementById("bg").style.backgroundImage = "linear-gradient(transparent 0%, transparent 50%, #acf4ff 100%)";
         // document.getElementById("grid").style.backgroundImage = "linear-gradient(to right, white 1px, transparent 1px), linear-gradient(to bottom, white 1px, transparent 1px)"
         document.getElementById("grid").style.backgroundImage = "url('images/tile.png')";
-        document.getElementById("bubble1").src = "images/bubble1.png";
-        document.getElementById("bubble2").src = "images/bubble2.png";
-        document.getElementById("bubble3").src = "images/bubble3.png";
+        document.getElementById("bubble1").src = "images/bubble2.png";
+        document.getElementById("bubble2").src = "images/bubble3.png";
+        document.getElementById("bubble3").src = "images/bubble1.png";
         document.getElementById("connectors").src = "images/connectors.png";
-        document.getElementById("realclock").style.color = "#e8075d";
+        document.getElementById("realclock").style.color = "rgb(58, 67, 75)"; // #e8075d
         document.getElementById("accent").style.color = "#3cc3d8";
+        document.getElementById("mute").style.backgroundImage = muted ? "url('images/muted.png')" : "url('images/unmuted.png')";
     }
 }
 
 window.onload = () => {
+    audio.forEach(a => {
+        a.muted = true;
+    });
+
     recolor();
     document.getElementById("switch").style.backgroundImage = dark ? "url('images/switch_off.png')" : "url('images/switch_on.png')";
 
@@ -237,10 +245,8 @@ window.onload = () => {
 }
 
 function ding1() {
-    if(muted == 0) {
-        tap.load();
-        tap.play();
-    }
+    tap.load();
+    tap.play();
 }
 
 function ding2() {
@@ -250,10 +256,8 @@ function ding2() {
     if (clicks == 50) {
         pfp.src = "images/winpfpcrack.png";
 
-        if(muted == 0) {
-            crack.load();
-            crack.play();
-        }
+        crack.load();
+        crack.play();
     } else {
         ding1();
     }
@@ -273,10 +277,8 @@ function ding2() {
 }
 
 function water() {
-    if(muted == 0) {
-        drop.load();
-        drop.play();
-    }
+    drop.load();
+    drop.play();
 }
 
 function redirect(url) {
@@ -290,27 +292,21 @@ function redirect(url) {
 }
 
 function tvpower() {
-    if(muted == 0) {
-        tvon.load();
-        tvon.play();
-    }
+    tvon.load();
+    tvon.play();
 }
 
 function tick() {
     if (ticker == 0) {
         ticker = 1;
         
-        if(muted == 0) {
-            tick1.load();
-            tick1.play();
-        }
+        tick1.load();
+        tick1.play();
     } else {
         ticker = 0;
 
-        if(muted == 0) {
-            tick2.load();
-            tick2.play();
-        }
+        tick2.load();
+        tick2.play();
     }
 }
 
@@ -342,11 +338,9 @@ function cdplay() {
             cd.style.pointerEvents = "auto";
         }, 500); // is 500 consistent?
 
-        if(muted == 0) {
-            music.load();
-            music.play();
-            music.loop = true;
-        }
+        music.load();
+        music.play();
+        music.loop = true;
         // use event listener method instead?
     } else {
         playing = 0;
@@ -363,10 +357,17 @@ function cdplay() {
 }
 
 function mute() {
-    document.getElementById("mute").style.backgroundImage = muted ? "url('images/unmuted.png')" : "url('images/muted.png')";
+    if(muted) {
+        document.getElementById("mute").style.backgroundImage = dark ? "url('images/unmuted5.png')" : "url('images/unmuted.png')";
+    } else {
+        document.getElementById("mute").style.backgroundImage = dark ? "url('images/muted5.png')" : "url('images/muted.png')";
+    }
     muted = 1 - muted;
 
     // if music is playing, should start (or keep) playing
+    audio.forEach(a => {
+        a.muted = !a.muted;
+    });
 }
 
 function darkmode() {

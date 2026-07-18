@@ -1,15 +1,18 @@
 // elements
-const terminal = document.getElementById("terminal");
+const terminal1 = document.getElementById("screen1").querySelector(".terminal");
+const terminal2 = document.getElementById("screen2").querySelector(".terminal");
+const terminal3 = document.getElementById("screen3").querySelector(".terminal");
 const canvas = document.getElementById("font-test");
 
 // global variables... probably want to change the name here?
-let terminaltext = "Real Terminal (Not Fake)<br/>(C) oofSauce. All rights reserved.";
+let terminaltext = "Real Terminal<br/>(C) oofSauce. All rights reserved.";
 let command = "";
 let promptString = "user@web-world:~$";
 let dir = ["home", "user"]
 let linelen = 0;
 let linecnt = 1;
-let MAX_WIDTH = 576;
+let MAX_WIDTH = 576; // WRONG!
+let selectedterminal = 1;
 
 function redirect(url) {
     window.location.href = url;
@@ -122,7 +125,7 @@ const printline = (line, ctrl, url = "") => {
         });
 
         if(url == "") {
-            terminaltext += `<br/><span style='color: white'>${linetr.trim()}</span>`;
+            terminaltext += `<br/><span class="result">${linetr.trim()}</span>`;
         } else {
             terminaltext += `<br/><a href='${url}' target='_blank' style='color: lightblue'>${linetr.trim()}</a>`
         }
@@ -145,34 +148,132 @@ const setPromptString = () => {
     promptString = "user@web-world:" + dirstr + "$";
 }
 
+const randomString = () => {
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+    const len = Math.floor(Math.random() * 14) + 1;
+    const ls = Array.from({length: len}, (_, index) => chars[Math.floor(Math.random() * chars.length)]);
+    return ls.join("");
+}
+
+const selectTerminal = () => {
+    for(let i=0; i<3; i++) {
+        const border = document.getElementById(`screen${i+1}`).querySelector(".terminalborder");
+        if(selectedterminal == i) {
+            border.style.backgroundImage = "conic-gradient(#fd004c, #fe9000, #fff020, #3edf4b, #3363ff, #b102b7, #fd004c)";
+            border.style.animation = "rotate 2.5s linear infinite";
+            // border.style.backgroundColor = "white";
+        } else {
+            border.style.backgroundImage = "none";
+            border.style.animation = "none";
+            // border.style.backgroundColor = "rgb(82, 255, 47)";
+        }
+    }
+}
+
+const renderIRC = () => {
+    const IRC = [[
+        "*** Now talking in #random",
+        "<infynity> wassup",
+        "<d3sm0nd> heey",
+        "<d3sm0nd> *hey",
+        "<infynity> you dont gotta\ncorrect that i know what you\nwere tryig to say",
+        "<d3sm0nd> *trying",
+        "<infynity> you KNOW what i was\ntring to say",
+        "<d3sm0nd> *tying",
+        "<infynity> *trying",
+        "<d3sm0nd> *trying",
+        "<infynity> haha get fukced",
+        "<d3sm0nd> *fucked",
+        "<infynity> ...",
+        "*** infynity has quit",
+        "<d3sm0nd> ...",
+        "<d3sm0nd> *infinity",
+    ], [
+        "*** Now talking in\n#programming",
+        "<alien> you know what sucks?\nthat you need classes to program\nin java",
+        "<scriptr> well you dont NEED\nthem... im self-taught",
+        "<alien> no dumbass, i mean\nOOP classes",
+        "<scriptr> wtf is OOP?",
+        "<alien> dude",
+        "<scriptr> out of pounds?",
+        // more guesses
+        "<alien> ok so evidently you do\nneed classes",
+    ]];
+
+    const chat = IRC[Math.floor(Math.random() * IRC.length)];
+
+    // works decently well but perhaps worth customizing timing for jokes
+    let total_time = 0;
+    for(let i=0; i<chat.length; i++) {
+        const time = chat[i].length * 100;
+        setTimeout(() => {
+            terminal3.textContent += chat[i] + "\n";
+            terminal3.scrollTop = terminal3.scrollHeight;
+        }, total_time + time);
+        total_time += time;
+    }
+
+    // terminal3.textContent += IRC[Math.floor(Math.random() * IRC.length)].join("\n");
+}
+
 window.onload = () => {
     // show terminal
     setTimeout(() => {
-        terminal.innerHTML = terminaltext;
-        terminal.style.padding = "15px";
-        terminal.style.width = "calc(100% - 40px)";
-        terminal.style.height = "calc(100% - 40px)";
-    }, 5500);
+        terminal2.innerHTML = terminaltext;
+        terminal2.style.padding = "15px";
+        terminal2.style.width = "calc(100% - 40px)";
+        terminal2.style.height = "calc(100% - 40px)";
+        selectTerminal();
+    }, 3000);
+
+    setTimeout(() => {
+        terminal1.style.padding = "15px";
+        terminal1.style.width = "calc(100% - 40px)";
+        terminal1.style.height = "calc(100% - 40px)";
+        terminal1.innerHTML = "Try `help` for a list of\ncommands.\n\nAlso, use `Ctrl-H` and\n`Ctrl-L` to switch between\nterminals.";
+
+        terminal3.style.padding = "15px";
+        terminal3.style.width = "calc(100% - 40px)";
+        terminal3.style.height = "calc(100% - 40px)";
+
+        // terminal3.textContent = "<f1n1t3ch> wassup\n<desmond> heey\n<desmond> *hey\n<f1n1t3ch> you dont gotta\ncorrect that i know what you\nwere trying to say";
+        renderIRC();
+        // setInterval(() => {
+        //     terminal3.innerHTML += `[term] ${randomString()}\n`;
+        //     terminal3.scrollTop = terminal3.scrollHeight;
+        // }, 100);
+    }, 3500);
 
     setTimeout(() => {
         // show primary prompt string
         printline(`<br/>${promptString} `, true);
-        terminal.innerHTML = terminaltext;
+        terminal2.innerHTML = terminaltext;
         
         window.onkeydown = (e) => {
             if(e.key.length == 1) { // does this work consistently?
-                if(e.ctrlKey) return;
+                if(e.ctrlKey) {
+                    if(e.key == "h") {
+                        e.preventDefault();
+                        selectedterminal = (selectedterminal + 2) % 3;
+                        selectTerminal();
+                    } else if(e.key == "l") {
+                        e.preventDefault();
+                        selectedterminal = (selectedterminal + 4) % 3;
+                        selectTerminal();
+                    }
+                    return;
+                }
 
                 // want input to be grey? need span tag magic...
                 readinput(e.key);
-                terminal.innerHTML = terminaltext;
+                terminal2.innerHTML = terminaltext;
             } else if(e.code == "Backspace" && linelen > 0) {
                 terminaltext = terminaltext.slice(0, -1);
                 if(terminaltext.slice(-1) == "\n") {
                     terminaltext = terminaltext.slice(0, -1);
                     linecnt -= 1;
                 }
-                terminal.innerHTML = terminaltext;
+                terminal2.innerHTML = terminaltext;
                 command = command.slice(0, -1);
                 linelen -= 1;
             } else if(e.code == "Enter") {
@@ -197,11 +298,11 @@ window.onload = () => {
 
                 if(coms[0] == "clear") {
                     terminaltext = `${promptString} `;
-                    terminal.innerHTML = terminaltext;
+                    terminal2.innerHTML = terminaltext;
                     command = "";
                     linelen = 0;
 
-                    terminal.scrollTop = terminal.scrollHeight;
+                    terminal2.scrollTop = terminal2.scrollHeight;
                     return;
                 } else if(coms[0] == "") {
                     // is it good practice to have empty branch?
@@ -349,77 +450,25 @@ window.onload = () => {
                     printline(`${coms[0]}: command not found.`, false);
                     printline("Use 'help' to view all commands.");
                     printline(`${promptString} `, true)
-                    terminal.innerHTML = terminaltext;
+                    terminal2.innerHTML = terminaltext;
                     command = "";
                     linelen = 0;
 
-                    terminal.scrollTop = terminal.scrollHeight;
+                    terminal2.scrollTop = terminal2.scrollHeight;
                     return;
                 }
                 // add "man"
                 // support for mkdir/touch? put in localstorage? how big can that be?
 
                 printline(`${promptString} `, true);
-                terminal.innerHTML = terminaltext;
+                terminal2.innerHTML = terminaltext;
                 command = "";
                 linelen = 0;
             }
             // arrow keys, tab completion (requires readInput overhaul)
 
             // always scroll to bottom of terminal
-            terminal.scrollTop = terminal.scrollHeight;
+            terminal2.scrollTop = terminal2.scrollHeight;
         }
-    }, 5700);
+    }, 3200);
 }
-
-
-
-// trying to implement the select box that's drawn whenever you click and drag on your desktop...
-// ...but its really not a cool or useful thing
-// let x = -1;
-// let y = -1;
-// window.addEventListener('mousedown', (event) => {
-//     x = event.clientX;
-//     y = event.clientY;
-
-//     const selectBox = document.createElement('div');
-//     selectBox.id = "selectBox";
-//     selectBox.style.position = "absolute";
-//     selectBox.style.backgroundColor = "rgb(71, 117, 255)";
-//     selectBox.style.opacity = "50%";
-//     selectBox.style.border = "2px solid lightblue";
-//     selectBox.style.left = `${x}px`;
-//     selectBox.style.top = `${y}px`;
-//     selectBox.style.zIndex = "9";
-//     document.body.appendChild(selectBox);
-// });
-
-// window.addEventListener('mousemove', (event) => {
-//     if(x == -1 || y == -1) return;
-//     const new_x = event.clientX;
-//     const new_y = event.clientY;
-
-//     const selectBox = document.getElementById("selectBox");
-
-//     if(new_x > x) {
-//         selectBox.style.width = `${new_x - x}px`;
-//     } else {
-//         selectBox.style.left = `${new_x}px`;
-//         selectBox.style.width = `${x - new_x}px`;
-//     }
-
-//     if(new_y > y) {
-//         selectBox.style.height = `${new_y - y}px`;
-//     } else {
-//         selectBox.style.top = `${new_y}px`;
-//         selectBox.style.height = `${y - new_y}px`;
-//     }
-// });
-
-// window.addEventListener('mouseup', (event) => {
-//     x = -1;
-//     y = -1;
-
-//     const selectBox = document.getElementById("selectBox");
-//     document.body.removeChild(selectBox);
-// });

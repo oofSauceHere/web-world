@@ -67,10 +67,12 @@ function iris(rev) {
 }
 
 window.onload = () => {
-    document.getElementById("page").style.backgroundImage = dark ? "url('images/space4.png')" : "none";
+    document.getElementById("page").style.color = dark ? "white" : "black";
+    document.getElementById("page").style.backgroundColor = dark ? "black" : "#e3e3e3";
+    document.getElementById("main").style.backgroundColor = dark ? "#292929" : "white";
     document.getElementById("switch").style.backgroundImage = dark ? "url('images/switch_off.png')" : "url('images/switch_on.png')";
 
-    iris(true);
+    // iris(true);
     setTimeout(() => {
         document.getElementById("aperture").style.clipPath = "none";
     }, 1500);
@@ -105,13 +107,15 @@ function mute() {
 
 function darkmode() {
     document.getElementById("switch").style.backgroundImage = dark ? "url('images/switch_on.png')" : "url('images/switch_off.png')";
-    document.getElementById("page").style.backgroundImage = dark ? "none" : "url('images/space4.png')";
+    document.getElementById("page").style.color = dark ? "black" : "white";
+    document.getElementById("page").style.backgroundColor = dark ? "#e3e3e3" : "black";
+    document.getElementById("main").style.backgroundColor = dark ? "white" : "#292929";
     dark = 1 - dark;
     localStorage.setItem("darkMode2", dark ? true : false);
 }
 
 function redirect(url) {
-    iris(false);
+    // iris(false);
 
     setTimeout(() => {
         window.location.href = url;
