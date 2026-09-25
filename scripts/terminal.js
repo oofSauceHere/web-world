@@ -223,8 +223,8 @@ window.onload = () => {
         terminal2.style.padding = "15px";
         terminal2.style.width = "calc(100% - 40px)";
         terminal2.style.height = "calc(100% - 40px)";
-        selectTerminal();
-    }, 3000);
+        // selectTerminal();
+    }, 2500);
 
     setTimeout(() => {
         terminal1.style.padding = "15px";
@@ -242,7 +242,7 @@ window.onload = () => {
         //     terminal3.innerHTML += `[term] ${randomString()}\n`;
         //     terminal3.scrollTop = terminal3.scrollHeight;
         // }, 100);
-    }, 3500);
+    }, 3000);
 
     setTimeout(() => {
         // show primary prompt string
@@ -255,11 +255,11 @@ window.onload = () => {
                     if(e.key == "h") {
                         e.preventDefault();
                         selectedterminal = (selectedterminal + 2) % 3;
-                        selectTerminal();
+                        // selectTerminal();
                     } else if(e.key == "l") {
                         e.preventDefault();
                         selectedterminal = (selectedterminal + 4) % 3;
-                        selectTerminal();
+                        // selectTerminal();
                     }
                     return;
                 }
@@ -470,5 +470,5 @@ window.onload = () => {
             // always scroll to bottom of terminal
             terminal2.scrollTop = terminal2.scrollHeight;
         }
-    }, 3200);
+    }, 2700);
 }

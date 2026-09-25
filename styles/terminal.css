@@ -76,17 +76,17 @@ body {
 }
 
 #screen1 {
-    animation: appear 0.5s steps(1, end) forwards, open2 1s 2s ease-in-out forwards;
+    animation: appear 0.5s steps(1, end) forwards, open2 0.75s 1.75s ease-out forwards;
     /* animation: appear 0.5s steps(1, end) forwards, open2 1s 2.5s ease-in-out forwards; */
     rotate: y 15deg;
 }
 
 #screen2 {
-    animation: appear 0.5s 0.5s steps(1, end) forwards, open 1s 2s ease-in-out forwards;
+    animation: appear 0.5s 0.5s steps(1, end) forwards, open 0.75s 1.75s ease-out forwards;
 }
 
 #screen3 {
-    animation: appear 0.5s 1s steps(1, end) forwards, open2 1s 2s ease-in-out forwards;
+    animation: appear 0.5s 1s steps(1, end) forwards, open2 0.75s 1.75s ease-out forwards;
     /* animation: appear 0.5s steps(1, end) forwards, open2 1s 2.5s ease-in-out forwards; */
     rotate: y -15deg;
 }

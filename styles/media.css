@@ -37,6 +37,58 @@ body {
     filter: blur(1px);
 }
 
+#load {
+    position: absolute;
+    height: 100vh;
+    width: 150vw;
+    background-color: #001329;
+
+    z-index: 20; /* arbitrary z-index values holding up the entire design infrastructure... */
+    overflow: visible;
+
+    animation: slide 1.5s ease-in forwards;
+}
+
+#load > img {
+    height: 100vh;
+    width: 100vh;
+    translate: -50vh;
+
+    animation: spin 1.5s ease-in forwards;
+}
+
+@keyframes slide {
+    0% {
+        translate: -50vw;
+    }
+
+    100% {
+        translate: 150vw;
+    }
+}
+
+@keyframes spin {
+    0% {
+        rotate: 0deg;
+    }
+
+    100% {
+        rotate: calc(min(200vw, calc(100vw + 100vh)) / (2 * pi * min(50vw, 50vh)) * 360deg);
+    }
+}
+
+/* @keyframes slide {
+    0% {
+        translate: max(-100vw, -100vh);
+        rotate: 0deg;
+    }
+
+    100% {
+        translate: min(200vw, calc(100vw + 100vh));
+        rotate: calc(min(200vw, calc(100vw + 100vh)) / (2 * pi * min(50vw, 50vh)) * 360deg);
+    }
+} */
+
 #menu {
     height: calc(100vh - 4rem);
     width: calc(400vh / 3 - 4rem);
@@ -92,4 +144,39 @@ h1 {
 
 #nav > a:nth-child(even) {
     transform: rotate(5deg);    
+}
+
+#mute {
+  height: 75px;
+  width: 75px;
+  image-rendering: pixelated;
+  /* cursor: pointer; */
+  position: absolute;
+  left: 85px;
+  bottom: 25px;
+  background-image: url('../images/muted5.png');
+  background-size: cover;
+  z-index: 9;
+  /* filter: blur(1px); */
+}
+
+#mute:active {
+  transform: scale(90%);
+}
+
+#switch {
+  height: 75px;
+  width: 75px;
+  image-rendering: pixelated;
+  /* cursor: pointer; */
+  position: absolute;
+  left: 10px;
+  bottom: 25px;
+  background-image: url('../images/switch_on.png');
+  background-size: cover;
+  z-index: 9;
+}
+
+#switch:active {
+  transform: scale(90%);
 }

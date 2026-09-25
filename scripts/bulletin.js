@@ -30,7 +30,7 @@ function iris(rev) {
             clipPath: end,
         }
     ], {
-        duration: 1500,
+        duration: 1250,
         fill: "forwards",
         easing: "ease-in" // cubic-bezier(.47,.01,1,.45)
     });

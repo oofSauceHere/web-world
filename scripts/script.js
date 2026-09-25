@@ -71,48 +71,13 @@ function iris(rev) {
             document.getElementById("aperture").style.clipPath = "none";
         }, 2000);
     }
-
-    // const width = window.innerWidth;
-    // const height = window.innerHeight;
-
-    // document.getElementById("aperture").style.visibility = "visible";
-    // document.getElementById("aperture").style.maskImage = `url('test/mask.svg'), linear-gradient(#ffffff, #ffffff)`;
-    // document.getElementById("aperture").style.maskPosition = `center center`;
-    // document.getElementById("aperture").style.maskMode = `luminance`;
-    // document.getElementById("aperture").style.maskRepeat = `no-repeat`;
-    // document.getElementById("aperture").style.maskComposite = `exclude`;
-
-    // const diagonal = Math.sqrt(width*width + height*height);
-    // const start = rev ? `0 0, ${width}px ${height}px` : `${diagonal}px ${diagonal}px, ${width}px ${height}px`;
-    // const end = rev ? `${diagonal}px ${diagonal}px, ${width}px ${height}px` : `0 0, ${width}px ${height}px`;
-    // const anim = document.getElementById("aperture").animate([
-    //     {
-    //         maskSize: start
-    //     },
-    //     {
-    //         maskSize: end
-    //     }
-    // ], {
-    //     duration: 1500,
-    //     fill: "forwards",
-    //     easing: "ease-in" // cubic-bezier(.47,.01,1,.45)
-    // });
-
-    // if(rev) {
-    //     setTimeout(() => {
-    //         document.getElementById("aperture").style.visibility = "hidden";
-    //     }, 1500);
-    // }
 }
 
 function recolor() {
     if(dark) {
         document.getElementById("aperture").style.cursor = "url('images/cursor2.png') 8 0, auto";
-        // document.getElementById("page").style.backgroundImage = "url('images/city_black.png')";
-        // document.getElementById("bg").style.backgroundImage = "linear-gradient(black 0%, grey 100%)"
-        // document.getElementById("bg").style.backgroundImage = "linear-gradient(transparent 0%, transparent 50%, black 100%)";
-        // document.getElementById("grid").style.backgroundImage = "linear-gradient(to right, grey 1px, transparent 1px), linear-gradient(to bottom, grey 1px, transparent 1px)"
-        document.getElementById("grid").style.backgroundImage = "url('images/space4.png')";
+        document.getElementById("bg").style.backgroundImage = "linear-gradient(to bottom, #000000 0%, #000000 100%)";
+        // document.getElementById("grid").style.backgroundImage = "url('images/space4.png')";
         document.getElementById("bubble1").src = "images/bubble2_red.png";
         document.getElementById("bubble2").src = "images/bubble3_red.png";
         document.getElementById("bubble3").src = "images/bubble1_red.png";
@@ -122,13 +87,9 @@ function recolor() {
         document.getElementById("mute").style.backgroundImage = muted ? "url('images/muted5.png')" : "url('images/unmuted5.png')";
     } else {
         document.getElementById("aperture").style.cursor = "url('images/cursor.png') 8 0, auto";
-        // document.getElementById("page").style.backgroundImage = "url('images/city_blue.png')";
-        document.getElementById("bg").style.backgroundImage = "linear-gradient(to bottom left, white 0%, #c9c9c9 100%)";
-        // document.getElementById("bg").style.backgroundImage = "linear-gradient(to bottom right, #92f0ff 0%, white 50%, #92f0ff 100%)";
-        // document.getElementById("bg").style.backgroundColor = "#92f0ff";
-        // document.getElementById("bg").style.backgroundImage = "linear-gradient(transparent 0%, transparent 50%, #acf4ff 100%)";
-        // document.getElementById("grid").style.backgroundImage = "linear-gradient(to right, white 1px, transparent 1px), linear-gradient(to bottom, white 1px, transparent 1px)"
-        document.getElementById("grid").style.backgroundImage = "url('images/tile.png')";
+        document.getElementById("bg").style.backgroundImage = "linear-gradient(to bottom, white 0%, white 25%, #afafaf 75%, #afafaf 100%)";
+        // document.getElementById("bg").style.backgroundImage = "linear-gradient(to bottom, white 0%, white 45%, #dbdbdb 55%, white 100%)";
+        // document.getElementById("grid").style.backgroundImage = "url('images/tile2.png')";
         document.getElementById("bubble1").src = "images/bubble2.png";
         document.getElementById("bubble2").src = "images/bubble3.png";
         document.getElementById("bubble3").src = "images/bubble1.png";
@@ -153,7 +114,6 @@ window.onload = () => {
     const hours = now.getHours();
     const minutes = now.getMinutes();
     const hours_str = `${ hours%12 < 10 && hours%12 != 0 ? '0' : '' }${ hours%12 == 0 ? '12' : hours%12 }`;
-    // const hours_str = `${ hours%12 == 0 ? '12' : hours%12 }`;
     const minutes_str = `${ minutes < 10 ? '0' : '' }${ minutes }`;
     document.getElementById("realclock").innerHTML = `${ hours_str }:${ minutes_str }`;
     setInterval(() => {
@@ -236,10 +196,6 @@ window.onload = () => {
         cd.style.animation = "";
     }, 2300);
 
-    // setInterval(() => {
-    //     spawncircle();
-    // }, 1500);
-
     const rand = Math.floor(Math.random() * shows.length);
     document.getElementById("show").innerHTML = shows[rand];
 }
@@ -262,13 +218,6 @@ function ding2() {
         ding1();
     }
 
-    // pfp.style.transform =
-    //     "translate(-200px, -100px) scale(110%) rotate(2.5deg)"; // scale(95%) ?
-    // setTimeout(() => {
-    //     pfp.style.transform = pfp.matches(":hover") ?
-    //         "translate(-200px, -100px) scale(110%)" :
-    //         "translate(-200px, -100px)";
-    // }, 50);
     pfp.style.animation =
         "ding 0.1s steps(1, end)";
     setTimeout(() => {
@@ -312,13 +261,6 @@ function tick() {
 
 function tickclick() {
     tick();
-
-    // time.style.animation =
-    //     "turn 0.1s steps(1, end) forwards";
-    // setTimeout(() => {
-    //     time.style.transform = "transform: translate(175px, 75px) rotate(30deg)";
-    //     time.style.animation = "";
-    // }, 100);
 }
 
 function cdactive() {
@@ -375,27 +317,4 @@ function darkmode() {
     dark = 1 - dark;
     localStorage.setItem("darkMode", dark ? true : false);
     recolor();
-}
-
-function spawncircle() {
-    let circle = document.createElement("img");
-    // apparently if the gif has limited loops, it needs to be reloaded so it doesnt stop playing forever (lame)
-    // circle.src = Math.random() < 0.5 ? "images/circle.gif?" + new Date().getTime() : "images/circle2.gif?" + new Date().getTime();
-    circle.src = (dark ? "images/circle2.gif?" : "images/circle.gif?") + new Date().getTime();
-    circle.draggable = false;
-    circle.classList.add("circle");
-    const size = Math.floor(Math.random() * 300) + 100;
-    circle.style.width = `${size}px`;
-    circle.style.height = `${size}px`;
-
-    const xrange = window.innerWidth - 750;
-    const xpos_pre = Math.random() * xrange;
-    const xpos = xpos_pre < xrange/2 ? xpos_pre + 100 : xpos_pre + 650;
-    const ypos = Math.random() * (window.innerHeight - 200) + 100;
-    circle.style.left = `${xpos}px`;
-    circle.style.top = `${ypos}px`;
-    document.getElementById("page").appendChild(circle);
-    setTimeout(() => {
-        document.getElementById("page").removeChild(circle);
-    }, 1000);
 }
