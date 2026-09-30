@@ -1,15 +1,18 @@
-const TEXT_SPEED = 25;
+const GUAVA = document.getElementById("guava");
+const KIWI = document.getElementById("kiwi");
+
+const TEXT_SPEED = 50;
 const DIALOGUE = [
-    "Hello!",
-    "Sorry, I sniffed you on your way in.\nYour packets smell new...",
+    "Oh, hello!\nYou... woke me up.",
+    "I just sniffed your packets.\nThey smell new...",
     "How exciting! Is this your first visit?\n(Surely you've never cleared your cache...)",
     "Do you want something to drink?\nWater? Carrot juice?",
     "Okay, we don't really have anything to drink.\nSorry... this is just a website.",
     "It's not even my website.\n(I just work here.)",
-    "We're also a little short-staffed.\nIt's just me and my friend Bea!",
+    "We're also a little short-staffed.\nIt's just me and my friend Kiwi.",
     "She's hard at work getting things ready for you.\nI think.",
-    "What? Who am I? Oh, I'm the webmaster.\nIndeed, a title fit for a spider!",
-    "...but I'm not a spider. I'm a bunny!\n(I just think \"webmaster\" looks good on a resume.)",
+    "Oh, right. My name is Guava!\nI'm the webmaster.",
+    "Not that it means much.\n(It just looks good on a resume.)",
     "Oh, sorry. I'm rambling.\nI'm excited to show you around! But first...",
     "What kind of experience would you like?",
 ];
@@ -32,13 +35,13 @@ let current_dialogue = 0;
 let timeouts = [];
 
 // play typewriter effect on text
-function type(text) {
-    document.getElementById("text").innerHTML = "";
+function type(text, name) {
+    document.getElementById(name).innerHTML = "";
     let delay = 0;
     for(let i=0; i<text.length; i++) {
         const t = setTimeout(() => {
-            document.getElementById("text").innerHTML += text[i] == "\n" ? "<br/>" : text[i];
-            if(current_dialogue == 7 && text[i] == ".") {
+            document.getElementById(name).innerHTML += text[i] == "\n" ? "<br/>" : text[i];
+            if(name == "text" && current_dialogue == 7 && text[i] == ".") {
                 setTimeout(() => {
                     document.getElementById("right").style.visibility = "visible";
                 }, 250);
@@ -61,45 +64,127 @@ function type(text) {
     return delay + text.length * TEXT_SPEED;
 }
 
+async function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 // loading page for simple version of site
-function load_simple() {
-    const duration = type("well, this should be easy...");
+async function load_simple() {
+    document.removeEventListener("keydown", progress);
+
+    GUAVA.src = `images/guava/guava_${current_dialogue}_talk.gif`;
+    const duration = type("Okay! Simple. Got it.", "text");
+    setTimeout(() => {
+        GUAVA.src = `images/guava/guava_${current_dialogue}.gif`;
+    }, duration);
     document.getElementById("indicator").style.display = "none";
     document.getElementById("loading").style.display = "block";
 
     setTimeout(() => {
-       document.getElementById("bar").style.animation = "fill 1s ease-in-out forwards";
-    }, 500 + duration);
+        document.getElementById("loading").style.animation = "fall 1s ease-in forwards";
+        GUAVA.src = `images/guava/guava_${current_dialogue+1}.gif`
+    }, 2500 + duration);
+
+    setTimeout(() => {
+        GUAVA.src = `images/guava/guava_${current_dialogue+1}_talk.gif`;
+        type("...okay, that's not supposed to happen", "text");
+    }, 3500 + duration);
+    setTimeout(() => {
+        document.getElementById("page").style.animation = "fill 1.5s ease-in-out forwards";
+    }, 4500 + duration);
+
+    setTimeout(() => {
+        document.getElementById("intro").remove(); // lets not clutter things up too much
+        document.getElementById("title").style.animation = "pop 0.2s steps(1) forwards";
+        document.querySelectorAll(".navitem").forEach((el, i) => {
+            el.style.animation = `pop 0.1s ${0.5 + i * 0.1}s steps(1) forwards`;
+        });
+        document.getElementById("copyright").style.animation = "pop 0.2s 1s steps(1) forwards";
+    }, 6000 + duration);
+
+    setTimeout(() => {
+        KIWI.src = "images/kiwi/kiwi_2.png";
+        KIWI.style.animation = "fly 1s ease forwards";
+    }, 7000 + duration);
+
+    // this is horrible
+    await delay(8000 + duration);
+
+    const typelist = (list, i) => {
+        if(i == list.length) {
+            document.querySelectorAll(".navitem").forEach((el, i) => {
+                el.style.marginLeft = "0";
+            });
+            return;
+        }
+        let duration2 = type(list[i], "text2");
+        if(i > 0) {
+            document.querySelectorAll(".navitem").forEach((el, i) => {
+                el.style.marginLeft = "0";
+            });
+            document.querySelectorAll(".navitem")[i-1].style.marginLeft = "auto";
+        }
+        setTimeout(() => {
+            duration2 += typelist(list, i+1);
+        }, duration2 + 500);
+        return duration2;
+    }
+
+    const kiwitext = [
+        "hi my name is kiwi",
+        "here's some stuff about me",
+        "here are some of my projects",
+        "here are my skills",
+        "here's my resume\n(download it)",
+        "and you can contact me at\nTHIS address",
+    ];
+    for (const text of kiwitext) {
+        const duration2 = type(text, "text2");
+        await delay(duration2 + 500);
+    }
+
+    setTimeout(() => {
+        document.getElementById("guava2").style.animation = "popup 1s ease forwards";
+    }, 500);
 }
 
 // i think you can extrapolate what this does
 function load_complex() {
-    const duration = type("transitioning...\n(not in that way)");
-    document.getElementById("indicator").style.display = "none";
-    document.getElementById("loading").style.display = "block";
+    document.removeEventListener("keydown", progress);
 
+    GUAVA.src = `images/guava/guava_${current_dialogue}_talk.gif`;
+    const duration = type("Okay, actually, this part's not done yet.\nWe'll let you when it's ready.\nI'm not sure how.\nMaybe we'll set up a mailing list.\n...we'll let you know when that's ready.", "text");
     setTimeout(() => {
-       document.getElementById("bar").style.animation = "fill 1s ease-in-out forwards";
-    }, 500 + duration);
+        GUAVA.src = `images/guava/guava_${current_dialogue}.gif`;
+    }, duration);
+    document.getElementById("indicator").style.display = "none";
+    // TODO: go to simple
+
+    // document.getElementById("loading").style.display = "block";
+    // setTimeout(() => {
+    //    document.getElementById("page").style.animation = "fill 1s ease-in-out forwards";
+    // }, 500 + duration);
 }
 
 function skip_dialogue() {
     timeouts.forEach((t) => {
         clearTimeout(t);
     });
-    document.getElementById("cursor").style.borderRadius = "12.5px";
     document.getElementById("text").innerHTML = DIALOGUE[DIALOGUE.length - 1].split("\n").join("<br/>");
     document.getElementById("indicator").innerHTML = RESPONSES[DIALOGUE.length - 1];
     document.getElementById("indicator").style.visibility = "visible";
     document.addEventListener("keydown", progress);
     document.getElementById("right").style.visibility = "hidden";
-    document.getElementById("webmaster").src = `images/bunny/webmaster${DIALOGUE.length-1}.png`;
+    GUAVA.src = `images/guava/guava_${DIALOGUE.length-1}.gif`;
     current_dialogue = DIALOGUE.length;
 }
 
 // skip to the choice dialogue
 function skip(e) {
     if(e.key == "Enter" && current_dialogue < DIALOGUE.length) {
+        // im so excited to get to use this operator
+        document.getElementById("sign")?.remove();
+        document.getElementById("sign2")?.remove();
         skip_dialogue();
     }
 }
@@ -121,84 +206,54 @@ function progress(e) {
 
 // run entire dialogue sequence
 function advance() {
-    document.getElementById("cursor").style.borderRadius = "12.5px";
     document.getElementById("right").style.visibility = "hidden";
-    document.getElementById("webmaster").src = `images/bunny/webmaster${current_dialogue}.png`;
-    const duration = type(DIALOGUE[current_dialogue]);
+    GUAVA.src = `images/guava/guava_${current_dialogue}_talk.gif`;
+    const duration = type(DIALOGUE[current_dialogue], "text");
+    const t1 = setTimeout(() => {
+        GUAVA.src = `images/guava/guava_${current_dialogue}.gif`;
+    }, duration);
+    timeouts.push(t1);
 
     document.getElementById("indicator").style.visibility = "hidden";
     document.getElementById("indicator").innerHTML = RESPONSES[current_dialogue];
     document.removeEventListener("keydown", progress);
-    const t = setTimeout(() => {
+    const t2 = setTimeout(() => {
         current_dialogue++;
         document.getElementById("indicator").style.visibility = "visible";
         document.addEventListener("keydown", progress);
     }, 500 + duration);
-    timeouts.push(t);
+    timeouts.push(t2);
 }
 
-// creating the curved text effect in the intro sequence involves individually rotating each letter of the text,
-// which requires span tags for each letter, which aesthetically i hate. so to avoid writing that im just having
-// js do it for me.
-function curve_text() {
-    let bottom_text = document.getElementById("bottom-text");
-    const interval = 45/(bottom_text.innerHTML.length-1);
-    // hell of a one-liner...
-    bottom_text.innerHTML = [...bottom_text.innerHTML].map((letter, i) => `<span style="position: absolute; transform: rotate(-${67.5 + interval*i}deg) translateX(-35rem) rotate(90deg)">${letter}</span>`).join("");
-}
-
-function enter() {
-    document.getElementById("cursor").style.borderRadius = "12.5px";
-    document.getElementById("intro").remove();
+function start() {
+    GUAVA.onclick = "";
+    GUAVA.src = "images/guava/guava_wake.gif";
+    document.getElementById("sign").style.animation = "spin2 10s 7.5s linear infinite, leave 0.3s ease-out forwards, leave2 0.6s 0.3s ease-in forwards, jiggle 0.9s linear forwards";
+    document.getElementById("sign2").style.animation = "spin3 10s 7.5s linear infinite, leave 0.3s ease-out forwards, leave2 0.6s 0.3s ease-in forwards, jiggle 0.9s linear forwards";
     setTimeout(() => {
-        document.getElementById("webmaster").style.animation = "appear 2.5s cubic-bezier(0, 1, 0, 1) forwards";
-    }, 500);
+        document.getElementById("sign").remove();
+        document.getElementById("sign2").remove();
+    }, 900);
     setTimeout(() => {
-        document.addEventListener("keydown", skip);
         advance();
-    }, 1000);
+    }, 3625);
 }
 
 window.onload = () => {
-    // curve_text();
-    setTimeout(() => {
-        // document.getElementById("webmaster").style.animation = "appear 2.5s cubic-bezier(0, 1, 0, 1) forwards";
-        document.getElementById("webmaster").src = "images/bunny/guava_wake.gif";
-    }, 1500);
-    setTimeout(() => {
-        document.addEventListener("keydown", skip);
-        advance();
-    }, 5000);
-    
+    document.addEventListener("keydown", skip);
+
     const cursor = document.getElementById("cursor");
     document.addEventListener("mousemove", (e) => {
+        cursor.style.visibility = "visible";
         const x = e.clientX;
         const y = e.clientY;
 
         cursor.style.transform = `translate(calc(${x}px - 50%), calc(${y}px - 50%))`;
     });
 
-    // const enter = document.getElementById("enter");
-    // enter.addEventListener("mouseenter", (e) => {
-    //     cursor.style.borderRadius = "0";
-    // });
-    // enter.addEventListener("mouseleave", (e) => {
-    //     cursor.style.borderRadius = "12.5px";
-    // });
+    setTimeout(() => {
+        GUAVA.style.pointerEvents = "all";
+    }, 7500);
 
-    const indicator = document.getElementById("indicator");
-    indicator.addEventListener("mouseenter", (e) => {
-        cursor.style.borderRadius = "0";
-    });
-    indicator.addEventListener("mouseleave", (e) => {
-        cursor.style.borderRadius = "12.5px";
-    });
+    // document.getElementById("css").href = "";
 }
-
-// Q&A
-//
-// Q: Did you steal the font from Bjork?
-// A: No.
-//
-// Q: Are you sure?
-// A: No. I mean yes.

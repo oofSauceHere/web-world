@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>web world - home</title>
-        <link rel="icon" id="favicon" type="image/x-icon" href="images/favicon-light.ico">
-        <link rel="stylesheet" href="styles/intro.css">
+        <title>kiwi.rocks</title>
+        <link rel="icon" id="favicon" type="image/x-icon" href="images/favicon.ico">
+        <link rel="stylesheet" id="css" href="styles/intro.css">
         <script src="scripts/intro.js" defer></script>
         <meta charset="UTF-8">
 
@@ -11,40 +11,48 @@
     </head>
     <body>
         <div id="cursor"></div>
-        <div id="layout">
+        <div id="intro">
+            <!-- <div id="ground"></div> -->
             <div id="left">
-                <div>
-                    <!-- <div id="bound"></div>
-                    <div id="bound2"></div> -->
-                    <div style="overflow: hidden">
-                        <img id="webmaster" src="images/bunny/guava_sleep.gif" draggable="false"/>
-                    </div>
-                </div>
+                <!-- should be 41x41, and need shadows -->
+                <img id="guava" onclick="start()" src="images/guava/guava_sleep.gif" draggable="false"/>
+                <img id="sign" src="images/sign.png" draggable="false"/>
+                <img id="sign2" src="images/sign2.png" draggable="false"/>
             </div>
             <div id="center" class="container">
-                <div id="textbox">
-                    <h1 id="text"></h1>
-                </div>
-                <h1 id="indicator"></h1>
+                <h2 id="text"></h2>
+                <h2 id="indicator"></h2>
                 <div id="loading" style="display: none">
-                    <div id="bar"></div>
-                    <h1>loading</h1>
+                    <!-- <div id="bar"></div> -->
+                    <h2>loading</h2>
                 </div>
+                <!-- <div id="arrow"></div> -->
             </div>
             <div id="right">
                 <img src="images/spotlight.gif" draggable="false"/>
-                <h1>(Bea's desk)</h1>
+                <h2>(Kiwi's desk)</h2>
             </div>
-            <!-- <div id="test"></div> -->
         </div>
-        <!-- <div id="intro">
-            <h1>please click</h1>
-            <div id="enter" onclick="enter();">
-                <div></div>
-                <p id="enter-shadow">BEGIN</p>
-                <p id="enter-text">BEGIN</p>
+        <div id="page">
+            <div id="rainbowcontainer">
+                <div id="rainbow"></div>
             </div>
-            <h1 id="bottom-text">otherwise your browser won't let me play audio!</h1>
-        </div> -->
+            <img id="kiwi" src="images/kiwi/kiwi_1.png" draggable="false"/>
+            <img id="guava2" src="images/guava/guava_0.gif" draggable="false"/>
+            <div id="sidebar">
+                <h1 id="title">kiwi<br/>&nbsp;.rocks</h1>
+                <div id="nav">
+                    <h2 class="navitem">about</h2>
+                    <h2 class="navitem">projects</h2>
+                    <h2 class="navitem">skills</h2>
+                    <h2 class="navitem">resume</h2>
+                    <h2 class="navitem">contact</h2>
+                </div>
+                <p id="copyright">(c) kiwi. no rights reserved.</p>
+            </div>
+
+            <!-- kiwi can walk through her bio and resume -->
+            <h2 id="text2"></h2>
+        </div>
     </body>
 </html>
