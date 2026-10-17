@@ -1,22 +1,36 @@
+const VISITED = localStorage.getItem("visited");
 const GUAVA = document.getElementById("guava");
 const KIWI = document.getElementById("kiwi");
-
+const GUAVA2 = document.getElementById("guava2");
 const TEXT_SPEED = 50;
-const DIALOGUE = [
-    "Oh, hello!\nYou... woke me up.",
-    "I just sniffed your packets.\nThey smell new...",
-    "How exciting! Is this your first visit?\n(Surely you've never cleared your cache...)",
-    "Do you want something to drink?\nWater? Carrot juice?",
-    "Okay, we don't really have anything to drink.\nSorry... this is just a website.",
-    "It's not even my website.\n(I just work here.)",
-    "We're also a little short-staffed.\nIt's just me and my friend Kiwi.",
-    "She's hard at work getting things ready for you.\nI think.",
-    "Oh, right. My name is Guava!\nI'm the webmaster.",
-    "Not that it means much.\n(It just looks good on a resume.)",
-    "Oh, sorry. I'm rambling.\nI'm excited to show you around! But first...",
-    "What kind of experience would you like?",
+
+// its useful to pair dialogue with functions in case something needs to happen at the same time a line of dialogue is read
+// i use this elsewhere, and since its a useful """paradigm""" i figured id explain it
+const DIALOGUE =  VISITED ? [
+    ["Welcome back!\nWhat kind of experience would you like?"],
+] : [
+    ["Oh, hello!\nYou... woke me up."],
+    ["I just sniffed your packets.\nThey smell new..."],
+    ["How exciting! Is this your first visit?\n(Surely you've never cleared your cache...)"],
+    ["Do you want something to drink?\nWater? Carrot juice?"],
+    ["Okay, we don't really have anything to drink.\nSorry... this is just a website."],
+    ["It's not even my website.\n(I just work here.)"],
+    ["We're also a little short-staffed.\nIt's just me and my friend Kiwi."],
+    ["She's hard at work getting things ready for you.\nI think.", (char) => {
+        if (char == '.') {
+            setTimeout(() => {
+                document.getElementById("right").style.visibility = "visible";
+            }, 250);
+        }
+    }],
+    ["Oh, right. My name is Guava!\nI'm the webmaster."],
+    ["Not that it means much.\n(It just looks good on a resume.)"],
+    ["Oh, sorry. I'm rambling.\nI'm excited to show you around! But first..."],
+    ["What kind of experience would you like?"],
 ];
-const RESPONSES = [
+const RESPONSES = VISITED ? [
+    "<span class=\"next\" onclick=\"load_simple()\" id=\"simple\">[←] simple</span>&emsp;&emsp;<span class=\"next\" onclick=\"load_complex()\" id=\"complex\">[→] lots of STUFF!</span>"
+] : [
     "<span class=\"next\" onclick=\"advance()\">[↑] to continue</span>&emsp;&emsp;<span class=\"next\" onclick=\"skip_dialogue()\">[Enter] to skip</span>",
     "<span class=\"next\" onclick=\"advance()\">[↑]</span>",
     "<span class=\"next\" onclick=\"advance()\">[↑]</span>", // first visit option
@@ -35,16 +49,15 @@ let current_dialogue = 0;
 let timeouts = [];
 
 // play typewriter effect on text
-function type(text, name) {
+function type(line, name) {
+    const text = line[0];
     document.getElementById(name).innerHTML = "";
     let delay = 0;
     for(let i=0; i<text.length; i++) {
         const t = setTimeout(() => {
             document.getElementById(name).innerHTML += text[i] == "\n" ? "<br/>" : text[i];
-            if(name == "text" && current_dialogue == 7 && text[i] == ".") {
-                setTimeout(() => {
-                    document.getElementById("right").style.visibility = "visible";
-                }, 250);
+            if(name == "text") {
+                line[1]?.(text[i])
             }
         }, delay + TEXT_SPEED * i);
         
@@ -68,12 +81,11 @@ async function delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-// loading page for simple version of site
-async function load_simple() {
+async function load_intro_cutscene() {
     document.removeEventListener("keydown", progress);
 
     GUAVA.src = `images/guava/guava_${current_dialogue}_talk.gif`;
-    const duration = type("Okay! Simple. Got it.", "text");
+    const duration = type(["Okay! Simple. Got it."], "text");
     setTimeout(() => {
         GUAVA.src = `images/guava/guava_${current_dialogue}.gif`;
     }, duration);
@@ -87,7 +99,7 @@ async function load_simple() {
 
     setTimeout(() => {
         GUAVA.src = `images/guava/guava_${current_dialogue+1}_talk.gif`;
-        type("...okay, that's not supposed to happen", "text");
+        type(["...okay, that's not supposed to happen."], "text");
     }, 3500 + duration);
     setTimeout(() => {
         document.getElementById("page").style.animation = "fill 1.5s ease-in-out forwards";
@@ -103,49 +115,129 @@ async function load_simple() {
     }, 6000 + duration);
 
     setTimeout(() => {
-        KIWI.src = "images/kiwi/kiwi_2.png";
+        KIWI.src = "images/kiwi/kiwi_2.gif";
         KIWI.style.animation = "fly 1s ease forwards";
     }, 7000 + duration);
 
-    // this is horrible
+    // this is a travesty
     await delay(8000 + duration);
 
-    const typelist = (list, i) => {
-        if(i == list.length) {
-            document.querySelectorAll(".navitem").forEach((el, i) => {
-                el.style.marginLeft = "0";
-            });
-            return;
+    const selectlink = (link) => {
+        return () => {
+            const item = document.getElementById(link);
+            item.style.marginLeft = "auto";
+            item.innerHTML = `>> ${item.innerHTML}`;
         }
-        let duration2 = type(list[i], "text2");
-        if(i > 0) {
-            document.querySelectorAll(".navitem").forEach((el, i) => {
-                el.style.marginLeft = "0";
-            });
-            document.querySelectorAll(".navitem")[i-1].style.marginLeft = "auto";
-        }
-        setTimeout(() => {
-            duration2 += typelist(list, i+1);
-        }, duration2 + 500);
-        return duration2;
     }
 
     const kiwitext = [
-        "hi my name is kiwi",
-        "here's some stuff about me",
-        "here are some of my projects",
-        "here are my skills",
-        "here's my resume\n(download it)",
-        "and you can contact me at\nTHIS address",
+        ["hi my name is kiwi"],
+        ["here's some stuff about me", selectlink("about")],
+        ["here are some of my projects", selectlink("projects")],
+        ["here are my skills", selectlink("skills")],
+        ["here's my resume\n(download it)", selectlink("resume")],
+        ["and you can contact me at\nTHIS address", selectlink("contact")],
     ];
-    for (const text of kiwitext) {
-        const duration2 = type(text, "text2");
-        await delay(duration2 + 500);
+    for (const line of kiwitext) {
+        const duration2 = type([line[0]], "text2");
+        document.querySelectorAll(".navitem").forEach((el) => {
+            el.style.marginLeft = "0";
+            el.innerHTML = `${el.id}`;
+        });
+        line[1]?.();
+        await delay(duration2 + 50);
     }
 
-    setTimeout(() => {
-        document.getElementById("guava2").style.animation = "popup 1s ease forwards";
-    }, 500);
+    document.querySelectorAll(".navitem").forEach((el, i) => {
+        el.style.marginLeft = "0";
+        el.innerHTML = `${el.id}`;
+    });
+
+    // await delay(500);
+
+    document.getElementById("guava2").src = "images/guava/guava_14.gif";
+    document.getElementById("guava2").style.animation = "popup 1s ease forwards";
+
+    await delay(500);
+
+    // [text, character, function?] so we know who's talking
+    const dialogue = [
+        ["Kiwi, they said they wanted simple!", 0],
+        ["THIS IS NOT SIMPLE!!!", 0],
+        ["it's pretty simple. it's my website!", 1],
+        ["No, it's not! Just let them use it normally.", 0],
+        ["i'm not stopping them from using it--", 1],
+        ["Clean it up!", 0],
+        ["oh, like this?", 1, () => {
+            document.getElementById("css").href = "styles/barebones.css";
+        }],
+        ["No, Kiwi--", 0],
+        ["Stop messing around!\nChange it back and get rid of your name!", 0],
+        ["What if a recruiter's looking?", 0],
+        ["there's no recruiter here", 1],
+        ["why should recruiters care about personal websites in the age of AI?", 1],
+        ["you know, let me say something--", 1],
+        ["Kiwi.", 0],
+        ["ugh, fine. but, just so you know...", 1],
+        ["the experience stopped being simple the moment they had to read dialogue.", 1],
+    ];
+
+    for (const line of dialogue) {
+        const cut_dialouge = line[0].endsWith("--") ? line[0].slice(0, -2) : line[0];
+        const duration2 = line[1] == 0 ? type([cut_dialouge], "text3") : type([cut_dialouge], "text2");
+        line[2]?.();
+        // traditionally em dashes indicate interruption in dialogue so we'll skip the delay
+        await delay(duration2 + (line[0].endsWith("--") ? 0 : 500));
+    }
+}
+
+// loading page for simple version of site
+async function load_simple() {
+    if (!VISITED) {
+        await load_intro_cutscene();
+        localStorage.setItem("visited", true);
+    } else {
+        document.getElementById("title").style.animation = "pop 0.2s steps(1) forwards";
+        document.querySelectorAll(".navitem").forEach((el, i) => {
+            el.style.animation = `pop 0.1s ${0.5 + i * 0.1}s steps(1) forwards`;
+        });
+        document.getElementById("copyright").style.animation = "pop 0.2s 1s steps(1) forwards";
+    }
+
+    // TODO: nav pointer events off until now
+
+    document.getElementById("css").href = "styles/intro.css";
+    document.getElementById("page").style.animation = "";
+    document.getElementById("page").style.transform = "translateX(0)";
+    KIWI.remove();
+    GUAVA2.remove();
+    document.getElementById("rainbowcontainer").remove();
+    document.getElementById("main").style.visibility = "visible";
+    document.getElementById("title").innerHTML = "deccan<br/>&nbsp;.rocks";
+    document.getElementById("copyright").innerHTML = "(c) 2026 Deccan. All Rights Reserved.";
+    document.getElementsByTagName("title")[0].innerHTML = "deccan.rocks";
+    document.getElementById("favicon").href = "images/favicon2.ico";
+    document.getElementById("text2").innerHTML = "";
+    document.getElementById("text3").innerHTML = "";
+    // document.getElementById("kiwi_guava").style.visibility = "visible";
+
+    const select = (e) => {
+        document.querySelectorAll(".navitem").forEach((el, i) => {
+            el.style.marginLeft = "0";
+            el.innerHTML = `${el.id}`;
+            el.style.pointerEvents = "auto";
+        });
+        if(e.target.id != "title") {
+            e.target.style.marginLeft = "auto";
+            e.target.innerHTML = `>> ${e.target.innerHTML}`;
+            e.target.style.pointerEvents = "none";
+        }
+    }
+
+    document.querySelectorAll(".navitem").forEach((el, i) => {
+        el.addEventListener("click", select);
+    });
+    document.getElementById("title").addEventListener("click", select);
 }
 
 // i think you can extrapolate what this does
@@ -153,7 +245,7 @@ function load_complex() {
     document.removeEventListener("keydown", progress);
 
     GUAVA.src = `images/guava/guava_${current_dialogue}_talk.gif`;
-    const duration = type("Okay, actually, this part's not done yet.\nWe'll let you when it's ready.\nI'm not sure how.\nMaybe we'll set up a mailing list.\n...we'll let you know when that's ready.", "text");
+    const duration = type(["Okay, actually, this part's not done yet.\nWe'll let you when it's ready.\nI'm not sure how.\nMaybe we'll set up a mailing list.\n...we'll let you know when that's ready."], "text");
     setTimeout(() => {
         GUAVA.src = `images/guava/guava_${current_dialogue}.gif`;
     }, duration);
@@ -170,7 +262,7 @@ function skip_dialogue() {
     timeouts.forEach((t) => {
         clearTimeout(t);
     });
-    document.getElementById("text").innerHTML = DIALOGUE[DIALOGUE.length - 1].split("\n").join("<br/>");
+    document.getElementById("text").innerHTML = DIALOGUE[DIALOGUE.length - 1][0].split("\n").join("<br/>");
     document.getElementById("indicator").innerHTML = RESPONSES[DIALOGUE.length - 1];
     document.getElementById("indicator").style.visibility = "visible";
     document.addEventListener("keydown", progress);
@@ -214,6 +306,8 @@ function advance() {
     }, duration);
     timeouts.push(t1);
 
+    // TODO: press arrow again to skip dialogue
+
     document.getElementById("indicator").style.visibility = "hidden";
     document.getElementById("indicator").innerHTML = RESPONSES[current_dialogue];
     document.removeEventListener("keydown", progress);
@@ -240,20 +334,13 @@ function start() {
 }
 
 window.onload = () => {
+    if (VISITED) {
+        document.getElementsByTagName("title")[0].innerHTML = "deccan.rocks";
+        document.getElementById("favicon").href = "images/favicon2.ico"; // something different initially?
+    }
     document.addEventListener("keydown", skip);
-
-    const cursor = document.getElementById("cursor");
-    document.addEventListener("mousemove", (e) => {
-        cursor.style.visibility = "visible";
-        const x = e.clientX;
-        const y = e.clientY;
-
-        cursor.style.transform = `translate(calc(${x}px - 50%), calc(${y}px - 50%))`;
-    });
 
     setTimeout(() => {
         GUAVA.style.pointerEvents = "all";
     }, 7500);
-
-    // document.getElementById("css").href = "";
 }

@@ -1,0 +1,66 @@
+@font-face {
+  font-family: 'Tiny 5';
+  src: url('../fonts/Tiny5-Regular.ttf');
+}
+
+html, body {
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    margin: 0;
+}
+
+
+#page {
+    height: calc(100%);
+    width: calc(100%);
+    position: absolute;
+}
+
+#kiwi {
+    height: 15vw;
+    width: 15vw;
+    position: absolute;
+    right: 0;
+    top: calc(50vh - 7.5vw);
+    image-rendering: pixelated;
+}
+
+#text2 {
+    position: absolute;
+    z-index: 100;
+    color: #002651;
+    width: 30vw;
+    right: 0;
+    top: calc(50vh + 3vw);
+    text-align: center;
+
+    font-family: 'Tiny 5';
+    font-size: 2rem;
+}
+
+#text3 {
+    position: absolute;
+    z-index: 100;
+    color: #b4b4b4;
+    width: 30vw;
+    left: 42.5vw;
+    bottom: 9vw;
+    text-align: center;
+
+    font-family: 'Tiny 5';
+    font-size: 2rem;
+}
+
+#guava2 {
+    height: 15vw;
+    width: 15vw;
+    position: absolute;
+    bottom: -6vw;
+    left: 42.5vw;
+    image-rendering: pixelated;
+}
+
+#kiwi_guava {
+    visibility: hidden;
+}
