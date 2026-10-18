@@ -28,15 +28,24 @@
 }
 
 /* GENERAL */
-html, body {
+:root {
+    --yellow: gold;
+    --pink: #f13554;
+    --orange: #fc5100;
+    --orange-accent: #e63d00;
+    --dark: #002651;
+    --dark-accent: #001f42;
+    --light: white;
+    --light-accent: lightgrey;
+}
+
+body {
     height: 100vh;
     width: 100vw;
     overflow: hidden;
     margin: 0;
-}
-
-body {
-    background-color: #002651;
+    /* background-color: var(--dark); */
+    background-image: linear-gradient(var(--dark) 0%, var(--dark) 49%, var(--dark-accent) 50%, var(--dark) 60%);
     perspective: 600px;
 }
 
@@ -60,7 +69,7 @@ img {
     width: calc(100% - 100px);
     position: absolute;
     padding: 50px;
-    background-color: #fc5100;
+    background-color: var(--orange);
     transform: translateX(calc(-100% - 15vw));
     /* background: repeating-conic-gradient(
         from 45deg at 50% 100%,
@@ -68,7 +77,9 @@ img {
         #ff5e11 10deg 20deg
     ); */
     display: flex;
+
     cursor: url('../images/cursor.png'), auto;
+    --pointer: url('../images/cursor2.png'), pointer;
 }
 
 #rainbowcontainer {
@@ -126,20 +137,21 @@ img {
 
 #title {
     color: white;
-    text-shadow: 0.35rem 0.35rem #002651;
+    text-shadow: 0.35rem 0.35rem var(--dark);
     font-family: 'Bold Pixels';
     font-size: 8.75vw;
     line-height: 5vw;
     margin: 0;
     scale: 0;
     width: fit-content;
+    user-select: none;
 
-    /* -webkit-text-stroke: 0.1rem #002651; */
+    /* -webkit-text-stroke: 0.1rem var(--dark); */
 }
 
 #title:hover {
     transform: scale(105%);
-    cursor: url('../images/cursor2.png') 16 16, pointer;
+    cursor: var(--pointer);
 }
 
 #nav {
@@ -150,17 +162,18 @@ img {
 
 .navitem {
     color: white;
-    text-shadow: 2.5px 2.5px #002651;
+    text-shadow: 2.5px 2.5px var(--dark);
     font-size: 2.5vw;
     line-height: 1vw;
     /* width: 100%; */
     width: fit-content;
     scale: 0;
+    user-select: none;
 }
 
 .navitem:hover {
     transform: scale(110%);
-    cursor: url('../images/cursor2.png') 16 16, pointer;
+    cursor: var(--pointer);
 }
 
 @keyframes pop {
@@ -176,8 +189,8 @@ img {
 }
 
 p {
-    color: white;
-    text-shadow: 1px 1px #002651;
+    color: var(--light);
+    text-shadow: 1px 1px var(--dark);
     font-family: 'Tiny 5';
     font-size: 1vw;
     margin: 0;
@@ -190,21 +203,33 @@ p {
 }
 
 #main {
+    --bg: var(--light);
+    --bg-accent: var(--light-accent);
+    --text: var(--dark);
+    --text-accent: var(--dark-accent);
+
     flex-grow: 1;
     height: calc(100% + 100px);
     margin: -50px -50px -50px 50px;
-    background-image: linear-gradient(white 0%, white 49%, lightgrey 50%, white 60%);
+    background-image: linear-gradient(var(--bg) 0%, var(--bg) 49%, var(--bg-accent) 50%, var(--bg) 60%);
     position: relative;
     visibility: hidden;
     z-index: 10;
-    box-shadow: inset 10px 0 0 #002651;
+    box-shadow: inset 10px 0 0 var(--text);
     perspective: 600px;
+}
+
+#main.dark {
+    --bg: var(--dark);
+    --bg-accent: var(--dark-accent);
+    --text: var(--light);
+    --text-accent: var(--light-accent);
 }
 
 #arrow {
     font-family: 'Bold Pixels';
     font-size: 15rem;
-    color: #e63d00;
+    color: var(--orange-accent);
     position: absolute;
     /* bottom: 50px; */
     bottom: 0;
@@ -215,12 +240,32 @@ p {
     letter-spacing: -1rem;
 }
 
-#kiwi_guava {
+/* #arrow2 {
+    font-family: 'Bold Pixels';
+    font-size: 15rem;
+    color: var(--orange-accent);
+    position: absolute;
+    top: 0;
+    left: calc(-3.1rem - 25vw - 50px);
+    z-index: 10;
+    line-height: 0.5;
+    letter-spacing: -1rem;
+} */
+
+.scene {
+    width: 100%;
+    height: 100%;
+    perspective: inherit;
+    position: absolute;
+
     visibility: hidden;
+}
+
+#kiwi_guava {
     height: 2.5rem;
     width: 2.5rem;
     position: absolute;
-    bottom: 50vh;
+    bottom: 49vh;
     right: 50px;
     image-rendering: auto;
 }
@@ -246,57 +291,55 @@ p {
     }
 }
 
-#guava_test {
-    height: 10rem;
-    width: 10rem;
-    position: absolute;
-    bottom: 25vh;
-    left: calc(37.5vw - 50px - 5rem);
-    z-index: 2;
-}
-
-#guava_test img {
+.shadow img {
     height: 100%;
     width: 100%;
     position: relative;
 }
 
-
-#guava_test > div::after {
+.shadow > div::after {
     content: '';
     position: absolute;
     display: block;
-    left: 25%;
-    bottom: -20%;
-    width: 50%;
-    height: 50%;
+    left: calc((100% - var(--width)) / 2);
+    bottom: -21.5%;
+    width: var(--width);
+    height: var(--width);
     z-index: -1;
     border-radius: 50%;
-    background-image: radial-gradient(circle closest-side, #888888 0%, #888888 75%, transparent 100%);
-    rotate: x 75deg;
+    background-image: radial-gradient(circle closest-side, var(--shadow-color) 0%, var(--shadow-color) 75%, transparent 100%);
+    rotate: x 80deg;
+}
+
+#guava_test {
+    height: 10rem;
+    width: 10rem;
+    position: absolute;
+    bottom: 30vh;
+    left: calc(37.5vw - 50px - 5rem);
+    z-index: 2;
+    --shadow-color: #888888;
+    --width: 50%;
+}
+
+.dark #guava_test {
+    --shadow-color: #001936;
 }
 
 #kiwi_test {
     height: 10rem;
     width: 10rem;
     position: absolute;
-    bottom: 25vh;
+    bottom: 30vh;
     left: calc(37.5vw - 50px - 5rem);
     animation: test_circle 2.5s linear infinite, switch_layer 2.5s 0.625s steps(1, end) infinite;
+
+    --shadow-color: #aaaaaa;
+    --width: 25%
 }
 
-#kiwi_test > div::after {
-    content: '';
-    position: absolute;
-    display: block;
-    left: 37.5%;
-    bottom: -20%;
-    width: 25%;
-    height: 25%;
-    z-index: -1;
-    border-radius: 50%;
-    background-image: radial-gradient(circle closest-side, #aaaaaa 0%, #aaaaaa 75%, transparent 100%);
-    rotate: x 75deg;
+.dark #kiwi_test {
+    --shadow-color: #001936;
 }
 
 @keyframes test_circle {
@@ -338,24 +381,34 @@ p {
     }
 }
 
-#text2 {
+.text {
+    width: calc(30vw - 50px);
+    padding: 25px;
     position: absolute;
     z-index: 100;
-    color: #002651;
-    width: 30vw;
-    right: 0;
-    top: calc(50vh + 3vw);
     text-align: center;
 }
 
+#text2 {
+    color: var(--dark);
+    right: 0;
+    top: calc(50vh + 3vw);
+}
+
 #text3 {
-    position: absolute;
-    z-index: 100;
-    color: white;
-    width: 30vw;
+    color: var(--light);
     left: 42.5vw;
     bottom: 9vw;
-    text-align: center;
+}
+
+#switch {
+    height: 5rem;
+    width: 5rem;
+    position: absolute;
+    bottom: 1rem;
+    right: 0;
+    z-index: 10;
+    cursor: var(--pointer);
 }
 
 #guava2 {
@@ -429,6 +482,9 @@ p {
     right: 0;
     overflow: visible;
     pointer-events: none;
+
+    --shadow-color: #001936;
+    --width: 50%;
 }
 
 #guava:hover {
@@ -525,32 +581,39 @@ p {
 }
 
 #right > img {
-    height: 50vw;
-    width: 20vw;
+    height: min(20vw, 40vh);
+    width: min(20vw, 40vh);
     position: absolute;
-    bottom: 20vh;
-    left: 2.5vw;
+    bottom: 50vh;
+    right: calc(12.5vw - min(10vw, 20vh));
 }
 
 #right > h2 {
-    color: #002651;
+    color: var(--light);
     font-family: 'Tiny 5';
     position: absolute;
-    bottom: 50vh;
+    bottom: 35vh;
     width: 25vw;
     text-align: center;
 }
 
 h2 {
-    color: white;
+    color: var(--light);
     font-family: 'Tiny 5';
     font-size: 2rem;
 }
 
+#text {
+    position: absolute;
+    bottom: calc(50vh + 1rem);
+}
+
 #indicator {
-    color: gold;
+    color: var(--yellow);
     visibility: hidden;
     cursor: default;
+    position: absolute;
+    top: calc(50vh + 1rem);
 }
 
 .next {
@@ -565,8 +628,10 @@ h2 {
 #loading {
     height: 2.5rem;
     width: 20rem;
-    border: 0.5rem solid white;
+    border: 0.5rem solid var(--light);
     padding: 0.5rem;
+    position: absolute;
+    top: calc(50vh + 1rem);
 
     display: grid;
     transform-origin: bottom center;
@@ -584,7 +649,7 @@ h2 {
 #bar {
     height: 2.5rem;
     width: 0;
-    background-color: white;
+    background-color: var(--light);
 
     position: absolute;
     grid-column: 1 1;
@@ -594,7 +659,7 @@ h2 {
     position: absolute;
     width: 20rem;
     margin: auto;
-    color: white;
+    color: var(--light);
     font-family: 'Tiny 5';
 }
 

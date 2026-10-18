@@ -1,8 +1,9 @@
 const VISITED = localStorage.getItem("visited");
-const GUAVA = document.getElementById("guava");
+const GUAVA = document.getElementById("guava").firstElementChild.firstElementChild; // bc of evil container wrapping
 const KIWI = document.getElementById("kiwi");
 const GUAVA2 = document.getElementById("guava2");
 const TEXT_SPEED = 50;
+const SCENES = document.querySelectorAll(".scene").length;
 
 // its useful to pair dialogue with functions in case something needs to happen at the same time a line of dialogue is read
 // i use this elsewhere, and since its a useful """paradigm""" i figured id explain it
@@ -45,8 +46,10 @@ const RESPONSES = VISITED ? [
     "<span class=\"next\" onclick=\"load_simple()\" id=\"simple\">[←] simple</span>&emsp;&emsp;<span class=\"next\" onclick=\"load_complex()\" id=\"complex\">[→] lots of STUFF!</span>"
 ];
 
-let current_dialogue = 0;
-let timeouts = [];
+let CURRENT_DIALOGUE = 0;
+let TIMEOUTS = [];
+let MODE = 0; // light / dark
+let CURRENT_SCENE = 0;
 
 // play typewriter effect on text
 function type(line, name) {
@@ -71,7 +74,7 @@ function type(line, name) {
             }
         }
         
-        timeouts.push(t);
+        TIMEOUTS.push(t);
     }
 
     return delay + text.length * TEXT_SPEED;
@@ -84,21 +87,21 @@ async function delay(ms) {
 async function load_intro_cutscene() {
     document.removeEventListener("keydown", progress);
 
-    GUAVA.src = `images/guava/guava_${current_dialogue}_talk.gif`;
+    GUAVA.src = `images/guava/guava_${CURRENT_DIALOGUE}_talk.gif`;
     const duration = type(["Okay! Simple. Got it."], "text");
     setTimeout(() => {
-        GUAVA.src = `images/guava/guava_${current_dialogue}.gif`;
+        GUAVA.src = `images/guava/guava_${CURRENT_DIALOGUE}.gif`;
     }, duration);
     document.getElementById("indicator").style.display = "none";
     document.getElementById("loading").style.display = "block";
 
     setTimeout(() => {
         document.getElementById("loading").style.animation = "fall 1s ease-in forwards";
-        GUAVA.src = `images/guava/guava_${current_dialogue+1}.gif`
+        GUAVA.src = `images/guava/guava_${CURRENT_DIALOGUE+1}.gif`
     }, 2500 + duration);
 
     setTimeout(() => {
-        GUAVA.src = `images/guava/guava_${current_dialogue+1}_talk.gif`;
+        GUAVA.src = `images/guava/guava_${CURRENT_DIALOGUE+1}_talk.gif`;
         type(["...okay, that's not supposed to happen."], "text");
     }, 3500 + duration);
     setTimeout(() => {
@@ -131,7 +134,7 @@ async function load_intro_cutscene() {
     }
 
     const kiwitext = [
-        ["hi my name is kiwi"],
+        ["omggg hello welcome to my website!"],
         ["here's some stuff about me", selectlink("about")],
         ["here are some of my projects", selectlink("projects")],
         ["here are my skills", selectlink("skills")],
@@ -139,13 +142,13 @@ async function load_intro_cutscene() {
         ["and you can contact me at\nTHIS address", selectlink("contact")],
     ];
     for (const line of kiwitext) {
-        const duration2 = type([line[0]], "text2");
+        const duration = type([line[0]], "text2");
         document.querySelectorAll(".navitem").forEach((el) => {
             el.style.marginLeft = "0";
             el.innerHTML = `${el.id}`;
         });
         line[1]?.();
-        await delay(duration2 + 50);
+        await delay(duration + 50);
     }
 
     document.querySelectorAll(".navitem").forEach((el, i) => {
@@ -171,23 +174,22 @@ async function load_intro_cutscene() {
         ["oh, like this?", 1, () => {
             document.getElementById("css").href = "styles/barebones.css";
         }],
-        ["No, Kiwi--", 0],
-        ["Stop messing around!\nChange it back and get rid of your name!", 0],
+        ["No, Kiwi.", 0],
+        ["Stop messing around!!!\nChange it back and get rid of your name!", 0],
         ["What if a recruiter's looking?", 0],
-        ["there's no recruiter here", 1],
-        ["why should recruiters care about personal websites in the age of AI?", 1],
-        ["you know, let me say something--", 1],
-        ["Kiwi.", 0],
+        ["oh, im sorry. i forgot how much recruiters like wading through vibecoded slop.", 1],
+        ["they dont look at these anymore. and its all AI's fault. you know,--", 1],
+        ["Kiwi. Just fix it.", 0],
         ["ugh, fine. but, just so you know...", 1],
-        ["the experience stopped being simple the moment they had to read dialogue.", 1],
+        ["the experience stopped being \"simple\" the moment they had to read dialogue.", 1],
     ];
 
     for (const line of dialogue) {
         const cut_dialouge = line[0].endsWith("--") ? line[0].slice(0, -2) : line[0];
-        const duration2 = line[1] == 0 ? type([cut_dialouge], "text3") : type([cut_dialouge], "text2");
+        const duration = line[1] == 0 ? type([cut_dialouge], "text3") : type([cut_dialouge], "text2");
         line[2]?.();
-        // traditionally em dashes indicate interruption in dialogue so we'll skip the delay
-        await delay(duration2 + (line[0].endsWith("--") ? 0 : 500));
+        // traditionally em dashes indicate interruption in dialogue so we'll emulate by skipping the delay
+        await delay(duration + (line[0].endsWith("--") ? 0 : 500));
     }
 }
 
@@ -204,8 +206,6 @@ async function load_simple() {
         document.getElementById("copyright").style.animation = "pop 0.2s 1s steps(1) forwards";
     }
 
-    // TODO: nav pointer events off until now
-
     document.getElementById("css").href = "styles/intro.css";
     document.getElementById("page").style.animation = "";
     document.getElementById("page").style.transform = "translateX(0)";
@@ -219,10 +219,10 @@ async function load_simple() {
     document.getElementById("favicon").href = "images/favicon2.ico";
     document.getElementById("text2").innerHTML = "";
     document.getElementById("text3").innerHTML = "";
-    // document.getElementById("kiwi_guava").style.visibility = "visible";
+    document.querySelectorAll(".scene")[CURRENT_SCENE].style.visibility = "visible";
 
     const select = (e) => {
-        document.querySelectorAll(".navitem").forEach((el, i) => {
+        document.querySelectorAll(".navitem").forEach((el) => {
             el.style.marginLeft = "0";
             el.innerHTML = `${el.id}`;
             el.style.pointerEvents = "auto";
@@ -231,26 +231,40 @@ async function load_simple() {
             e.target.style.marginLeft = "auto";
             e.target.innerHTML = `>> ${e.target.innerHTML}`;
             e.target.style.pointerEvents = "none";
+        } else {
+            document.querySelectorAll(".scene")[CURRENT_SCENE].style.visibility = "hidden";
+            document.querySelectorAll(".scene")[(CURRENT_SCENE = (CURRENT_SCENE + 1)%SCENES)].style.visibility = "visible";
         }
     }
 
-    document.querySelectorAll(".navitem").forEach((el, i) => {
+    document.querySelectorAll(".navitem").forEach((el) => {
         el.addEventListener("click", select);
     });
     document.getElementById("title").addEventListener("click", select);
 }
 
 // i think you can extrapolate what this does
-function load_complex() {
+async function load_complex() {
     document.removeEventListener("keydown", progress);
 
-    GUAVA.src = `images/guava/guava_${current_dialogue}_talk.gif`;
-    const duration = type(["Okay, actually, this part's not done yet.\nWe'll let you when it's ready.\nI'm not sure how.\nMaybe we'll set up a mailing list.\n...we'll let you know when that's ready."], "text");
-    setTimeout(() => {
-        GUAVA.src = `images/guava/guava_${current_dialogue}.gif`;
-    }, duration);
+    GUAVA.src = `images/guava/guava_${CURRENT_DIALOGUE}_talk.gif`;
     document.getElementById("indicator").style.display = "none";
-    // TODO: go to simple
+    const guavatext = [
+        ["Okay, actually, this part's not done yet."],
+        ["We'll let you when it's ready."],
+        ["I'm not sure how."],
+        ["Maybe we'll set up a mailing list."],
+        ["...we'll let you know when that's ready."]
+    ];
+    for (const line of guavatext) {
+        const duration = type(line, "text");
+        await delay(duration + 1000);
+    }
+
+    GUAVA.src = `images/guava/guava_${CURRENT_DIALOGUE}.gif`;
+    setTimeout(() => {
+        load_simple();
+    }, 1000);
 
     // document.getElementById("loading").style.display = "block";
     // setTimeout(() => {
@@ -259,7 +273,7 @@ function load_complex() {
 }
 
 function skip_dialogue() {
-    timeouts.forEach((t) => {
+    TIMEOUTS.forEach((t) => {
         clearTimeout(t);
     });
     document.getElementById("text").innerHTML = DIALOGUE[DIALOGUE.length - 1][0].split("\n").join("<br/>");
@@ -268,12 +282,12 @@ function skip_dialogue() {
     document.addEventListener("keydown", progress);
     document.getElementById("right").style.visibility = "hidden";
     GUAVA.src = `images/guava/guava_${DIALOGUE.length-1}.gif`;
-    current_dialogue = DIALOGUE.length;
+    CURRENT_DIALOGUE = DIALOGUE.length;
 }
 
 // skip to the choice dialogue
 function skip(e) {
-    if(e.key == "Enter" && current_dialogue < DIALOGUE.length) {
+    if(e.key == "Enter" && CURRENT_DIALOGUE < DIALOGUE.length) {
         // im so excited to get to use this operator
         document.getElementById("sign")?.remove();
         document.getElementById("sign2")?.remove();
@@ -283,11 +297,11 @@ function skip(e) {
 
 // handle progression to the next dialogue
 function progress(e) {
-    if(e.key == "ArrowUp" && (current_dialogue < DIALOGUE.length && current_dialogue != 4)) {
+    if(e.key == "ArrowUp" && (CURRENT_DIALOGUE < DIALOGUE.length && CURRENT_DIALOGUE != 4)) {
         advance();
-    } else if (current_dialogue == 4 && (e.key == "ArrowLeft" || e.key == "ArrowRight")) {
+    } else if (CURRENT_DIALOGUE == 4 && (e.key == "ArrowLeft" || e.key == "ArrowRight")) {
         advance();  
-    } else if(current_dialogue == DIALOGUE.length) {
+    } else if(CURRENT_DIALOGUE == DIALOGUE.length) {
         if(e.key == "ArrowRight") {
             load_complex();
         } else if(e.key == "ArrowLeft") {
@@ -299,28 +313,29 @@ function progress(e) {
 // run entire dialogue sequence
 function advance() {
     document.getElementById("right").style.visibility = "hidden";
-    GUAVA.src = `images/guava/guava_${current_dialogue}_talk.gif`;
-    const duration = type(DIALOGUE[current_dialogue], "text");
+    GUAVA.src = `images/guava/guava_${CURRENT_DIALOGUE}_talk.gif`;
+    const duration = type(DIALOGUE[CURRENT_DIALOGUE], "text");
     const t1 = setTimeout(() => {
-        GUAVA.src = `images/guava/guava_${current_dialogue}.gif`;
+        GUAVA.src = `images/guava/guava_${CURRENT_DIALOGUE}.gif`;
     }, duration);
-    timeouts.push(t1);
+    TIMEOUTS.push(t1);
 
     // TODO: press arrow again to skip dialogue
 
     document.getElementById("indicator").style.visibility = "hidden";
-    document.getElementById("indicator").innerHTML = RESPONSES[current_dialogue];
+    document.getElementById("indicator").innerHTML = RESPONSES[CURRENT_DIALOGUE];
     document.removeEventListener("keydown", progress);
     const t2 = setTimeout(() => {
-        current_dialogue++;
+        CURRENT_DIALOGUE++;
         document.getElementById("indicator").style.visibility = "visible";
         document.addEventListener("keydown", progress);
     }, 500 + duration);
-    timeouts.push(t2);
+    TIMEOUTS.push(t2);
 }
 
 function start() {
     GUAVA.onclick = "";
+    GUAVA.style.pointerEvents = "none";
     GUAVA.src = "images/guava/guava_wake.gif";
     document.getElementById("sign").style.animation = "spin2 10s 7.5s linear infinite, leave 0.3s ease-out forwards, leave2 0.6s 0.3s ease-in forwards, jiggle 0.9s linear forwards";
     document.getElementById("sign2").style.animation = "spin3 10s 7.5s linear infinite, leave 0.3s ease-out forwards, leave2 0.6s 0.3s ease-in forwards, jiggle 0.9s linear forwards";
@@ -331,6 +346,12 @@ function start() {
     setTimeout(() => {
         advance();
     }, 3625);
+}
+
+function toggle_mode() {
+    MODE = 1 - MODE;
+    document.getElementById("switch").src = MODE == 0 ? "images/switch_on.png" : "images/switch_off.png";
+    document.getElementById("main").classList.toggle("dark");
 }
 
 window.onload = () => {

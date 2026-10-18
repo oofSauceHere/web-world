@@ -26,27 +26,27 @@ html, body {
     image-rendering: pixelated;
 }
 
-#text2 {
+.text {
+    width: calc(30vw - 50px);
+    padding: 25px;
     position: absolute;
     z-index: 100;
+    text-align: center;
+}
+
+#text2 {
     color: #002651;
-    width: 30vw;
     right: 0;
     top: calc(50vh + 3vw);
-    text-align: center;
 
     font-family: 'Tiny 5';
     font-size: 2rem;
 }
 
 #text3 {
-    position: absolute;
-    z-index: 100;
     color: #b4b4b4;
-    width: 30vw;
     left: 42.5vw;
     bottom: 9vw;
-    text-align: center;
 
     font-family: 'Tiny 5';
     font-size: 2rem;

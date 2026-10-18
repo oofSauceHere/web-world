@@ -13,10 +13,13 @@
         <!-- INTRO SEQUENCE -->
         <!-- students of the craft! try not to put 5 minute cutscenes in your website... -->
         <div id="intro">
-            <!-- <div id="ground"></div> -->
             <div id="left">
                 <!-- should be 41x41, and need shadows -->
-                <img id="guava" onclick="start()" src="images/guava/guava_sleep.gif" draggable="false"/>
+                <div id="guava" class="shadow">
+                    <div>
+                        <img src="images/guava/guava_sleep.gif" onclick="start()" draggable="false"/>
+                    </div>
+                </div>
                 <img id="sign" src="images/sign.png" draggable="false"/>
                 <img id="sign2" src="images/sign2.png" draggable="false"/>
             </div>
@@ -24,13 +27,11 @@
                 <h2 id="text"></h2>
                 <h2 id="indicator"></h2>
                 <div id="loading" style="display: none">
-                    <!-- <div id="bar"></div> -->
                     <h2>loading</h2>
                 </div>
-                <!-- <div id="arrow"></div> -->
             </div>
             <div id="right">
-                <img src="images/spotlight.gif" draggable="false"/>
+                <img src="images/kiwidesk.gif" draggable="false"/>
                 <h2>(Kiwi's desk)</h2>
             </div>
         </div>
@@ -56,24 +57,32 @@
             </div>
             <div id="main">
                 <div id="arrow">>></div>
-                <!-- <img id="kiwi_guava" src="images/kiwi_guava.gif" draggable="false"/> -->
+                <!-- <div id="arrow2">>></div> -->
                 <!-- <img id="hexagon" src="images/hexagon.png" draggable="false"/> -->
 
-                <div id="guava_test">
-                    <div>
-                        <img src="images/guava/guava_5.gif" draggable="false"/>
+                <!-- fun scenes with kiwi & guava! -->
+                <div class="scene">
+                    <img id="kiwi_guava" src="images/kiwi_guava.gif" draggable="false"/>
+                </div>
+                <div class="scene">
+                    <div id="guava_test" class="shadow">
+                        <div>
+                            <img src="images/guava/guava_5.gif" draggable="false"/>
+                        </div>
+                    </div>
+                    <div id="kiwi_test" class="shadow">
+                        <div>
+                            <img src="images/kiwi/kiwi_1.png" draggable="false"/>
+                        </div>
                     </div>
                 </div>
-                <div id="kiwi_test">
-                    <div>
-                        <img src="images/kiwi/kiwi_1.png" draggable="false"/>
-                    </div>
-                </div>
+
+                <img id="switch" onclick="toggle_mode()" src="images/switch_on.png"/>
             </div>
 
             <!-- kiwi can walk through her bio and resume -->
-            <h2 id="text2"></h2>
-            <h2 id="text3"></h2>
+            <h2 id="text2" class="text"></h2>
+            <h2 id="text3" class="text"></h2>
         </div>
     </body>
 </html>
