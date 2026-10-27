@@ -32,24 +32,22 @@ html, body {
     position: absolute;
     z-index: 100;
     text-align: center;
+    margin: 0;
+
+    font-family: 'Tiny 5';
+    font-size: 2rem;
 }
 
 #text2 {
     color: #002651;
     right: 0;
     top: calc(50vh + 3vw);
-
-    font-family: 'Tiny 5';
-    font-size: 2rem;
 }
 
 #text3 {
     color: #b4b4b4;
     left: 42.5vw;
     bottom: 9vw;
-
-    font-family: 'Tiny 5';
-    font-size: 2rem;
 }
 
 #guava2 {
@@ -61,6 +59,6 @@ html, body {
     image-rendering: pixelated;
 }
 
-#kiwi_guava {
-    visibility: hidden;
+.scene {
+    display: none;
 }

@@ -44,6 +44,7 @@
             <img id="kiwi" src="images/kiwi/kiwi_1.gif" draggable="false"/>
             <img id="guava2" src="images/guava/guava_0.gif" draggable="false"/>
             <div id="sidebar">
+                <!-- <div id="grid"><div></div></div> -->
                 <h1 id="title">kiwi<br/>&nbsp;.rocks</h1>
                 <!-- i seem to have forgotten about the "nav" element -->
                 <div id="nav">
@@ -56,24 +57,64 @@
                 <p id="copyright">(c) 2026 Kiwi. No rights reserved.</p>
             </div>
             <div id="main">
-                <div id="arrow">>></div>
+                <!-- <div id="arrow">>></div> -->
                 <!-- <div id="arrow2">>></div> -->
                 <!-- <img id="hexagon" src="images/hexagon.png" draggable="false"/> -->
 
                 <!-- fun scenes with kiwi & guava! -->
-                <div class="scene">
+                <div class="skit scene">
                     <img id="kiwi_guava" src="images/kiwi_guava.gif" draggable="false"/>
                 </div>
-                <div class="scene">
+
+                <div class="skit scene">
                     <div id="guava_test" class="shadow">
                         <div>
-                            <img src="images/guava/guava_5.gif" draggable="false"/>
+                            <!-- TODO: fix desync between gif playback and css animation sometimes -->
+                            <!-- <img src="images/guava/guava_15.gif" draggable="false"/> -->
+                             <img src="images/guava/guava_5.gif" draggable="false"/>
                         </div>
+                        <!-- text goes here -->
                     </div>
                     <div id="kiwi_test" class="shadow">
                         <div>
+                            <!-- TODO: kiwi doesn't blink. -->
                             <img src="images/kiwi/kiwi_1.png" draggable="false"/>
                         </div>
+                        <!-- text goes here -->
+                    </div>
+                </div>
+
+                <div class="skit scene">
+                    <div id="guava_test2" class="shadow">
+                        <div>
+                            <!-- TODO: fix desync between gif playback and css animation sometimes -->
+                            <!-- <img src="images/guava/guava_15.gif" draggable="false"/> -->
+                             <img src="images/guava/guava_9.gif" draggable="false"/>
+                        </div>
+                        <!-- text goes here -->
+                    </div>
+                    <div id="kiwi_test2" class="shadow">
+                        <div>
+                            <img src="images/kiwi/kiwi_2.png" draggable="false"/>
+                        </div>
+                        <!-- text goes here -->
+                    </div>
+                    <img id="crawler" src="images/crawler.gif" draggable="false"/>
+                </div>
+
+                <div id="contactscene" class="scene">
+                    <div id="plane" class="shadow">
+                        <div>
+                             <img src="images/plane.gif" draggable="false"/>
+                        </div>
+                    </div>
+                    <form id="contactform">
+                        <input type="text" placeholder="name"/>
+                        <input type="email" placeholder="email"/>
+                        <textarea type="text" placeholder="message"></textarea>
+                    </form>
+                    <div id="connect">
+                        <!-- <h2 id="send">>> send</h2> -->
                     </div>
                 </div>
 

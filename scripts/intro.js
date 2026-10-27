@@ -3,7 +3,7 @@ const GUAVA = document.getElementById("guava").firstElementChild.firstElementChi
 const KIWI = document.getElementById("kiwi");
 const GUAVA2 = document.getElementById("guava2");
 const TEXT_SPEED = 50;
-const SCENES = document.querySelectorAll(".scene").length;
+const SCENES = document.querySelectorAll(".skit").length;
 
 // its useful to pair dialogue with functions in case something needs to happen at the same time a line of dialogue is read
 // i use this elsewhere, and since its a useful """paradigm""" i figured id explain it
@@ -171,7 +171,7 @@ async function load_intro_cutscene() {
         ["No, it's not! Just let them use it normally.", 0],
         ["i'm not stopping them from using it--", 1],
         ["Clean it up!", 0],
-        ["oh, like this?", 1, () => {
+        ["like this?", 1, () => {
             document.getElementById("css").href = "styles/barebones.css";
         }],
         ["No, Kiwi.", 0],
@@ -186,7 +186,7 @@ async function load_intro_cutscene() {
 
     for (const line of dialogue) {
         const cut_dialouge = line[0].endsWith("--") ? line[0].slice(0, -2) : line[0];
-        const duration = line[1] == 0 ? type([cut_dialouge], "text3") : type([cut_dialouge], "text2");
+        const duration = type([cut_dialouge], line[1] == 0 ?  "text3" : "text2");
         line[2]?.();
         // traditionally em dashes indicate interruption in dialogue so we'll emulate by skipping the delay
         await delay(duration + (line[0].endsWith("--") ? 0 : 500));
@@ -227,13 +227,37 @@ async function load_simple() {
             el.innerHTML = `${el.id}`;
             el.style.pointerEvents = "auto";
         });
+
+        document.querySelectorAll(".scene").forEach((el2) => {
+            el2.style.visibility = "hidden";
+        });
+            
         if(e.target.id != "title") {
             e.target.style.marginLeft = "auto";
             e.target.innerHTML = `>> ${e.target.innerHTML}`;
             e.target.style.pointerEvents = "none";
         } else {
-            document.querySelectorAll(".scene")[CURRENT_SCENE].style.visibility = "hidden";
-            document.querySelectorAll(".scene")[(CURRENT_SCENE = (CURRENT_SCENE + 1)%SCENES)].style.visibility = "visible";
+            document.querySelectorAll(".skit")[(CURRENT_SCENE = (CURRENT_SCENE + 1)%SCENES)].style.visibility = "visible";
+        }
+
+        if(e.target.id == "contact") {
+            const contactform = document.getElementById("contactform");
+            // contactform.style.animation = "";
+            document.getElementById("contactscene").style.visibility = "visible";
+            contactform.style.transform = "translateY(-50px)";
+            contactform.animate([
+                {
+                    transform: "translateY(-50px)",
+                    opacity: 0,
+                }, {
+                    transform: "translateY(0)",
+                    opacity: 1,
+                }
+            ], {
+                duration: 500,
+                fill: "forwards",
+                easing: "ease-out",
+            });
         }
     }
 
@@ -337,8 +361,8 @@ function start() {
     GUAVA.onclick = "";
     GUAVA.style.pointerEvents = "none";
     GUAVA.src = "images/guava/guava_wake.gif";
-    document.getElementById("sign").style.animation = "spin2 10s 7.5s linear infinite, leave 0.3s ease-out forwards, leave2 0.6s 0.3s ease-in forwards, jiggle 0.9s linear forwards";
-    document.getElementById("sign2").style.animation = "spin3 10s 7.5s linear infinite, leave 0.3s ease-out forwards, leave2 0.6s 0.3s ease-in forwards, jiggle 0.9s linear forwards";
+    document.getElementById("sign").style.animation = "spin2 10s 7.5s steps(72, end) infinite, leave 0.3s ease-out forwards, leave2 0.6s 0.3s ease-in forwards, jiggle 0.9s linear forwards";
+    document.getElementById("sign2").style.animation = "spin3 10s 7.5s steps(72, end) infinite, leave 0.3s ease-out forwards, leave2 0.6s 0.3s ease-in forwards, jiggle 0.9s linear forwards";
     setTimeout(() => {
         document.getElementById("sign").remove();
         document.getElementById("sign2").remove();
@@ -351,10 +375,12 @@ function start() {
 function toggle_mode() {
     MODE = 1 - MODE;
     document.getElementById("switch").src = MODE == 0 ? "images/switch_on.png" : "images/switch_off.png";
-    document.getElementById("main").classList.toggle("dark");
+    document.getElementById("page").classList.toggle("dark");
 }
 
 window.onload = () => {
+    toggle_mode();
+    
     if (VISITED) {
         document.getElementsByTagName("title")[0].innerHTML = "deccan.rocks";
         document.getElementById("favicon").href = "images/favicon2.ico"; // something different initially?
